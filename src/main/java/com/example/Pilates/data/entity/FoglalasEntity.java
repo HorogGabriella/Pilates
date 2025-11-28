@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "bookings")
 @Getter
@@ -18,6 +20,7 @@ public class FoglalasEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String resztvevoNeve;
+    private LocalDateTime idopont;
 
     @ManyToOne
     @JoinColumn(name = "class_session_id")
