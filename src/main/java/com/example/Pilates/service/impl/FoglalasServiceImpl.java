@@ -11,6 +11,8 @@ import com.example.Pilates.service.dto.FoglalasDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class FoglalasServiceImpl implements FoglalasService {
 
@@ -29,24 +31,33 @@ public class FoglalasServiceImpl implements FoglalasService {
     @Override
     public FoglalasDto createFoglalas( FoglalasDto foglalasDto) {
         OraEntity ora = oraRepo.findById(foglalasDto.getOraId()) .orElseThrow(() -> new RuntimeException("Az óra nem található!"));
-        FelhasznaloEntity felhasznalo = felhasznaloRepo.findByFelhasznaloNev(foglalasDto.getResztvevoNeve()) .orElseThrow(() -> new RuntimeException("Felhasználó nem található!"));
-        if(ora.getFoglalasok().size() >= ora.getFerohely()){
+        FelhasznaloEntity felhasznalo = felhasznaloRepo.findByFelhasznaloNev(foglalasDto.getResztvevoNeve());
+
+        if (ora.getFoglalasok().size() >= ora.getFerohely()) {
             throw new RuntimeException("Nincs több szabad hely az órán!");
         }
+
         FoglalasEntity foglalas = new FoglalasEntity();
         foglalas.setResztvevoNeve(foglalasDto.getResztvevoNeve());
         foglalas.setId(foglalasDto.getFoglalasId());
         FoglalasEntity saved = foglalasRepo.save(foglalas);
 
-        return mapper.map(saved, FoglalasDto.class);
+            return mapper.map(saved, FoglalasDto.class);
+
     }
 
     @Override
-    public void cancelBooking(Long foglalasId) {
+        public void cancelFoglalas(Long foglalasId) {
         FoglalasEntity f = foglalasRepo.findById(foglalasId)
                 .orElseThrow(() -> new RuntimeException("Foglalás nem található"));
         foglalasRepo.delete(f);
     }
 
+    @Override
+        public int getOraFoglalasSzama(Long oraId) {
+        OraEntity ora = oraRepo.findById(oraId)
+                .orElseThrow(() ->new RuntimeException("Ora nem található"));
+        return ora.getFoglalasok().size();
 
+    }
 }

@@ -7,5 +7,5 @@ import javax.swing.text.html.Option;
 import java.util.Optional;
 
 public interface FelhasznaloRepository extends JpaRepository <FelhasznaloEntity, Long> {
-    Optional<FelhasznaloEntity> findByFelhasznaloNev(String felhasznaloNev);
+    FelhasznaloEntity findByFelhasznaloNev(String felhasznaloNev);
 }
