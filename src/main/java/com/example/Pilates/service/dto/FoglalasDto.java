@@ -13,5 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class FoglalasDto {
     private Long foglalasId;
+    private Long oraId;
     private String resztvevoNeve;
 }

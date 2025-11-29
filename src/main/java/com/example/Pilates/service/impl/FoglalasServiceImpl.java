@@ -28,6 +28,11 @@ public class FoglalasServiceImpl implements FoglalasService {
 
     @Override
     public FoglalasDto createFoglalas( FoglalasDto foglalasDto) {
+        OraEntity ora = oraRepo.findById(foglalasDto.getOraId()) .orElseThrow(() -> new RuntimeException("Az óra nem található!"));
+        FelhasznaloEntity felhasznalo = felhasznaloRepo.findByFelhasznaloNev(foglalasDto.getResztvevoNeve()) .orElseThrow(() -> new RuntimeException("Felhasználó nem található!"));
+        if(ora.getFoglalasok().size() >= ora.getFerohely()){
+            throw new RuntimeException("Nincs több szabad hely az órán!");
+        }
         FoglalasEntity foglalas = new FoglalasEntity();
         foglalas.setResztvevoNeve(foglalasDto.getResztvevoNeve());
         foglalas.setId(foglalasDto.getFoglalasId());
@@ -37,20 +42,10 @@ public class FoglalasServiceImpl implements FoglalasService {
     }
 
     @Override
-    public FoglalasDto bookClass(Long oraid, Long felhasznaloId) {
-        OraEntity ora = oraRepo.findById(oraid) .orElseThrow(() -> new RuntimeException("Az óra nem található!"));
-        FelhasznaloEntity felhasznalo = felhasznaloRepo.findById(felhasznaloId)             .orElseThrow(() -> new RuntimeException("Felhasználó nem található!"));
-        if(ora.getFoglalasok().size() >= ora.getFerohely()){
-            throw new RuntimeException("Nincs több szabad hely az órán!");
-        }
-
-        FoglalasEntity e = foglalasRepo.getByFoglaloNeve()
-
-    }
-
-    @Override
     public void cancelBooking(Long foglalasId) {
-
+        FoglalasEntity f = foglalasRepo.findById(foglalasId)
+                .orElseThrow(() -> new RuntimeException("Foglalás nem található"));
+        foglalasRepo.delete(f);
     }
 
 

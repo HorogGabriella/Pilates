@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface FoglalasRepository extends JpaRepository<FoglalasEntity, Long> {
 
-    FoglalasEntity getByFoglaloNeve(String nev);
 }

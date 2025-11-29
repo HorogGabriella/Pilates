@@ -47,16 +47,17 @@ public class OraServiceImpl implements OraService {
         return mapper.map(saved, OraDto.class);
     }
 
-    public OraDto update(Long id, OraDto dto) {
+    @Override
+    public OraDto updateClass(Long id, OraDto oradto) {
         OraEntity e = orarepo.getByOraid(id);
-         e.setOktato(dto.getOktato());
-         e.setOratipus(e.getOratipus());
-         e.setFerohely(e.getFerohely());
-         e.setIdopont(e.getIdopont());
+        e.setOktato(oradto.getOktato());
+        e.setOratipus(oradto.getOratipus());
+        e.setFerohely(oradto.getFerohely());
+        e.setIdopont(oradto.getIdopont());
 
-         e = orarepo.save(e);
+        e = orarepo.save(e);
 
-         return oraMapper.oraEntityToDto(e);
+        return oraMapper.oraEntityToDto(e);
     }
 
     @Override
