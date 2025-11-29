@@ -1,10 +1,8 @@
 package com.example.Pilates.service.dto;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -12,13 +10,12 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@EqualsAndHashCode
 public class OraDto {
-    @NotBlank
-    private String oratipus;
-    @NotBlank
+    private Long id;
     private String oktato;
-    @NotBlank
-    private int ferohely;
-    @NotBlank
+    private String oratipus;
     private LocalDateTime idopont;
+    private int ferohely;
 }

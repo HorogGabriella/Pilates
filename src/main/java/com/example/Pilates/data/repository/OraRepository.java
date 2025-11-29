@@ -10,7 +10,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OraRepository extends JpaRepository<OraEntity,Long> {
-    List<OraEntity> findByOra(LocalDateTime oraid);
+    List<OraEntity>getByTime(LocalDateTime oraid);
+
+    OraEntity getByOraid(Long id);
 
     @Modifying
     @Transactional

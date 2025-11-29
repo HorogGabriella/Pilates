@@ -19,10 +19,15 @@ import java.util.List;
 public class OraEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private Long id;
+    @Column(name = "teacher")
     private String oktato;
+    @Column(name = "classtype")
     private String oratipus;
+    @Column(name = "time")
     private LocalDateTime idopont;
+    @Column(name = "capacity")
     private int ferohely;
 
     //kapcsolat a FoglalasEntityvel, ha az órát törlöm vagy módosítom, a hozzá tartozó foglalások is, ha egy foglalást kiveszek a listából akkor automatikusan törlődik az adatbáziból

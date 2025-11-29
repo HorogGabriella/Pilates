@@ -4,6 +4,7 @@ import com.example.Pilates.data.entity.OraEntity;
 import com.example.Pilates.data.repository.OraRepository;
 import com.example.Pilates.service.OraService;
 import com.example.Pilates.service.dto.OraDto;
+import com.example.Pilates.service.mapper.OraMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +18,12 @@ public class OraServiceImpl implements OraService {
     private final OraRepository orarepo;
     private final ModelMapper mapper;
 
-    public OraServiceImpl(OraRepository orarepo, ModelMapper mapper) {
+    private final OraMapper oraMapper;
+
+    public OraServiceImpl(OraRepository orarepo, ModelMapper mapper, OraMapper oraMapper) {
         this.orarepo = orarepo;
         this.mapper = mapper;
+        this.oraMapper = oraMapper;
     }
 
     @Override
@@ -32,7 +36,7 @@ public class OraServiceImpl implements OraService {
 
     @Override
     public OraDto getClassByTime(LocalDateTime idopont) {
-       return mapper.map(orarepo.findByOra(idopont),OraDto.class);
+       return mapper.map(orarepo.getByTime(idopont),OraDto.class);
 
     }
 
@@ -43,6 +47,17 @@ public class OraServiceImpl implements OraService {
         return mapper.map(saved, OraDto.class);
     }
 
+    public OraDto update(Long id, OraDto dto) {
+        OraEntity e = orarepo.getByOraid(id);
+         e.setOktato(dto.getOktato());
+         e.setOratipus(e.getOratipus());
+         e.setFerohely(e.getFerohely());
+         e.setIdopont(e.getIdopont());
+
+         e = orarepo.save(e);
+
+         return oraMapper.oraEntityToDto(e);
+    }
 
     @Override
     public void deleteClass(Long id) {

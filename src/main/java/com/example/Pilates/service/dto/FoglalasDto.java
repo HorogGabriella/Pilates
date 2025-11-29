@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FoglalasDto {
+    private String oratipus;
+    private String oktato;
     private String resztvevoNeve;
     private LocalDateTime idopont;
 }
