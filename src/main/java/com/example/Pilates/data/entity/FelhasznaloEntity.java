@@ -33,6 +33,8 @@ public class FelhasznaloEntity implements UserDetails {
     @ManyToOne
     private JogosultsagEntity jogosultsag;
 
+    @OneToMany(mappedBy = "felhasznalo")
+    private List<FoglalasEntity> foglalasok;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

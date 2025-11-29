@@ -19,12 +19,14 @@ public class FoglalasEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String resztvevoNeve;
-    @Column(name = "time")
-    private LocalDateTime idopont;
 
     @ManyToOne
     @JoinColumn(name = "class_session_id")
     private OraEntity ora;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private FelhasznaloEntity felhasznalo;
 }

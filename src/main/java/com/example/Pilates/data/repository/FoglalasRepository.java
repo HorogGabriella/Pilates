@@ -8,8 +8,5 @@ import java.util.List;
 
 public interface FoglalasRepository extends JpaRepository<FoglalasEntity, Long> {
 
-    //Foglalasok adott orahoz
-    List<FoglalasEntity> findByIdopont(LocalDateTime idopont);
-
-    List<FoglalasEntity> findByResztvevoNeve(String nev);
+    FoglalasEntity getByFoglaloNeve(String nev);
 }
