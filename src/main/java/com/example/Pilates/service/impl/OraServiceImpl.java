@@ -8,9 +8,7 @@ import com.example.Pilates.service.mapper.OraMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class OraServiceImpl implements OraService {
@@ -34,11 +32,11 @@ public class OraServiceImpl implements OraService {
                 .toList();
     }
 
-    @Override
+   /* @Override
     public OraDto getClassByTime(LocalDateTime idopont) {
        return mapper.map(orarepo.getByTime(idopont),OraDto.class);
 
-    }
+    }*/
 
     @Override
     public OraDto createClass(OraDto oradto) {
@@ -49,7 +47,7 @@ public class OraServiceImpl implements OraService {
 
     @Override
     public OraDto updateClass(Long id, OraDto oradto) {
-        OraEntity e = orarepo.getByOraid(id);
+        OraEntity e = orarepo.getById(id);
         e.setOktato(oradto.getOktato());
         e.setOratipus(oradto.getOratipus());
         e.setFerohely(oradto.getFerohely());

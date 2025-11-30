@@ -14,7 +14,7 @@ import lombok.Setter;
 public class RegisztracioDto {
     @NotBlank(message = "Ne legyen üres")
     @Size(min = 3, max = 100)
-    private String felhasznaloNev;
+    private String email;
     private String nev;
     @NotBlank
     @Size(min = 8, max = 200)

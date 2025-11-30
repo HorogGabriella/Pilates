@@ -29,4 +29,36 @@ public class FoglalasEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private FelhasznaloEntity felhasznalo;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getResztvevoNeve() {
+        return resztvevoNeve;
+    }
+
+    public void setResztvevoNeve(String resztvevoNeve) {
+        this.resztvevoNeve = resztvevoNeve;
+    }
+
+    public OraEntity getOra() {
+        return ora;
+    }
+
+    public void setOra(OraEntity ora) {
+        this.ora = ora;
+    }
+
+    public FelhasznaloEntity getFelhasznalo() {
+        return felhasznalo;
+    }
+
+    public void setFelhasznalo(FelhasznaloEntity felhasznalo) {
+        this.felhasznalo = felhasznalo;
+    }
 }

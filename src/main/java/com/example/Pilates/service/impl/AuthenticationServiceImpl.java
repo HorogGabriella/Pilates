@@ -9,7 +9,6 @@ import com.example.Pilates.service.TokenService;
 import com.example.Pilates.service.dto.BejelentkezesDto;
 import com.example.Pilates.service.dto.RegisztracioDto;
 import com.example.Pilates.service.mapper.FelhasznaloMapper;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,26 +18,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private final PasswordEncoder passwordEncoder;
-    private final FelhasznaloRepository repo;
-    private final JogosultsagRepository jogrepo;
-    private final FelhasznaloMapper mapper;
-    private final AuthenticationManager authManager;
-    private final TokenService tokenService;
+    PasswordEncoder passwordEncoder;
+    FelhasznaloRepository repo;
+    JogosultsagRepository jogrepo;
+    FelhasznaloMapper mapper;
+    AuthenticationManager authManager;
+    TokenService tokenService;
 
     @Override
     public void regisztracio(RegisztracioDto regisztracioDto) {
         FelhasznaloEntity e = mapper.regFelh(regisztracioDto);
-        e.setJelszo(passwordEncoder.encode(e.getJelszo()));
+        e.setJelszo(passwordEncoder.encode(e.getPassword()));
 
-        JogosultsagEntity jog = jogrepo.findByNev("FELHASZNALO");
+        JogosultsagEntity jog = jogrepo.findByJog("FELHASZNALO");
         if(jog != null){
             e.setJogosultsag(jog);
         } else {
             jog = new JogosultsagEntity();
-            jog.setNev("FELHASZNALO");
+            jog.setJog("FELHASZNALO");
             jog = jogrepo.save(jog);
 
             e.setJogosultsag(jog);
@@ -52,7 +50,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         Authentication auth = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        bejelentkezesDto.getFelhasznaloNev(),
+                        bejelentkezesDto.getEmail(),
                         bejelentkezesDto.getJelszo()
                 )
         );
@@ -60,7 +58,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         SecurityContextHolder.setContext(context);
 
         FelhasznaloEntity f =
-                repo.findByFelhasznaloNev(bejelentkezesDto.getFelhasznaloNev());
+                repo.findByEmail(bejelentkezesDto.getEmail());
         return tokenService.generateToken(f);
 
     }

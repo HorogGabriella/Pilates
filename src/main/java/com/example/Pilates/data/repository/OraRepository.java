@@ -6,16 +6,13 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
+public interface OraRepository extends JpaRepository<OraEntity, Long> {
+    //List<OraEntity>getByTime(LocalDateTime idopont);
 
-public interface OraRepository extends JpaRepository<OraEntity,Long> {
-    List<OraEntity>getByTime(LocalDateTime oraid);
-
-    OraEntity getByOraid(Long id);
+    OraEntity getById(Long id);
 
     @Modifying
     @Transactional
-    @Query("DELETE From OraEntity c where lower(c.id) = lower(:id)")
+    @Query("DELETE From OraEntity c where (c.id) = (:id)")
     void deleteClass(Long id);
 }

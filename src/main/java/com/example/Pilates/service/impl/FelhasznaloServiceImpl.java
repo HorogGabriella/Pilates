@@ -21,7 +21,7 @@ public class FelhasznaloServiceImpl implements FelhasznaloService {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return repo.findByFelhasznaloNev(username);
+                return repo.findByEmail(username);
             }
         };
     }

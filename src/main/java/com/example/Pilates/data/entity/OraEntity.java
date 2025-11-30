@@ -34,6 +34,53 @@ public class OraEntity {
     @OneToMany(mappedBy = "ora", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FoglalasEntity> foglalasok = new ArrayList<>();
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getOktato() {
+        return oktato;
+    }
+
+    public String getOratipus() {
+        return oratipus;
+    }
+
+    public LocalDateTime getIdopont() {
+        return idopont;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setOktato(String oktato) {
+        this.oktato = oktato;
+    }
+
+    public void setOratipus(String oratipus) {
+        this.oratipus = oratipus;
+    }
+
+    public void setIdopont(LocalDateTime idopont) {
+        this.idopont = idopont;
+    }
+
+    public void setFerohely(int ferohely) {
+        this.ferohely = ferohely;
+    }
+
+    public void setFoglalasok(List<FoglalasEntity> foglalasok) {
+        this.foglalasok = foglalasok;
+    }
+
+    public int getFerohely() {
+        return ferohely;
+    }
+
+    public List<FoglalasEntity> getFoglalasok() {
+        return foglalasok;
+    }
 
     //hány foglalás van az adott órára
     public int getBookedCount(){

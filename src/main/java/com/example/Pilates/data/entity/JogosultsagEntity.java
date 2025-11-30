@@ -18,11 +18,19 @@ public class JogosultsagEntity implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(unique = true)
-    private String nev;
+    @Column(name = "role_name")
+    private String jog;
 
     @Override
     public String getAuthority() {
-        return nev;
+        return jog;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setJog(String jog) {
+        this.jog = jog;
     }
 }

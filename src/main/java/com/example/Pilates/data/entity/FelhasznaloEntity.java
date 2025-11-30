@@ -25,8 +25,8 @@ public class FelhasznaloEntity implements UserDetails {
     private Long id;
     @Column(name = "name", nullable = false)
     private String nev;
-    @Column(name = "username")
-    private String felhasznaloNev;
+    @Column(name = "email", nullable = false,unique = true)
+    private String email;
     @Column(name = "password")
     private String jelszo;
 
@@ -48,6 +48,34 @@ public class FelhasznaloEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return felhasznaloNev;
+        return null;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNev(String nev) {
+        this.nev = nev;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setJelszo(String jelszo) {
+        this.jelszo = jelszo;
+    }
+
+    public void setJogosultsag(JogosultsagEntity jogosultsag) {
+        this.jogosultsag = jogosultsag;
+    }
+
+    public void setFoglalasok(List<FoglalasEntity> foglalasok) {
+        this.foglalasok = foglalasok;
     }
 }

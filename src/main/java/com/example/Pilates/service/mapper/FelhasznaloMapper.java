@@ -10,8 +10,7 @@ public interface FelhasznaloMapper {
 
     RegisztracioDto reg(FelhasznaloEntity felhasznalo);
 
-    @org.mapstruct.Mapping(target = "jogosultsag", ignore = true)
-    @org.mapstruct.Mapping(target = "id", ignore = true)
-    @org.mapstruct.Mapping(target = "authorities", ignore = true)
+    @org.mapstruct.Mapping(target = "email", ignore = true)
+    @org.mapstruct.Mapping(target = "jelszo", ignore = true)
     FelhasznaloEntity regFelh(RegisztracioDto regisztracio);
 }

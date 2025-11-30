@@ -11,8 +11,6 @@ import com.example.Pilates.service.dto.FoglalasDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class FoglalasServiceImpl implements FoglalasService {
 
@@ -31,7 +29,7 @@ public class FoglalasServiceImpl implements FoglalasService {
     @Override
     public FoglalasDto createFoglalas( FoglalasDto foglalasDto) {
         OraEntity ora = oraRepo.findById(foglalasDto.getOraId()) .orElseThrow(() -> new RuntimeException("Az óra nem található!"));
-        FelhasznaloEntity felhasznalo = felhasznaloRepo.findByFelhasznaloNev(foglalasDto.getResztvevoNeve());
+        FelhasznaloEntity felhasznalo = felhasznaloRepo.findByEmail(foglalasDto.getResztvevoNeve());
 
         if (ora.getFoglalasok().size() >= ora.getFerohely()) {
             throw new RuntimeException("Nincs több szabad hely az órán!");
