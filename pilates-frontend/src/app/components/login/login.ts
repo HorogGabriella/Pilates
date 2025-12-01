@@ -1,11 +1,4 @@
-import { Component } from '@angular/core';
-
-@Component({
-  selector: 'app-login',
-  imports: [],
-  templateUrl: './login.html',
-  styleUrl: './login.css',
-})
-export class Login {
-
+export interface BejelentkezesDto {
+  email: string;
+  jelszo: string;
 }

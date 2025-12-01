@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ClassSession} from '../../models/class-session';
 import {PilatesService} from '../../services/pilates.service';
-
 @Component({
   selector: 'app-class-list',
   standalone: true,

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/types/http';
+
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ClassSession} from '../models/class-session';
 
@@ -8,23 +9,27 @@ import {ClassSession} from '../models/class-session';
 })
 export class PilatesService {
 
-  private apiUrl ='http://localhost:8080/api/classes'
+  private apiUrl = 'http://127.0.0.1:8080/api/classes'
 
   constructor(private http: HttpClient) {
   }
-
-  private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token'); // A böngészőből olvassuk ki
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-  }
-
   getClasses(): Observable<ClassSession[]> {
-    return this.http.get<ClassSession[]>(this.apiUrl, { headers: this.getHeaders() });
+    // A headers-t közvetlenül itt hozzuk létre, hogy elkerüljük a típus-hibákat
+    const headers = this.createHeaders();
+    return this.http.get<ClassSession[]>(this.apiUrl);
   }
 
   createClass(data: ClassSession): Observable<ClassSession> {
-    return this.http.post<ClassSession>(this.apiUrl, data, { headers: this.getHeaders() });
+    const headers = this.createHeaders();
+    return this.http.post<ClassSession>(this.apiUrl, headers);
+  }
+
+  // Kiemeltük külön függvénybe, és "any"-re castoljuk, ha nagyon makacs a hiba
+  private createHeaders(): HttpHeaders {
+    let token = '';
+    if (typeof localStorage !== 'undefined') {
+      token = localStorage.getItem('token') || '';
+    }
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 }
