@@ -1,5 +1,6 @@
 package com.example.Pilates.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -14,9 +15,13 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class OraDto {
     private Long id;
+    @JsonProperty("teacher")
     private String oktato;
+    @JsonProperty("classtype")
     private String oratipus;
+    @JsonProperty("time")
     private LocalDateTime idopont;
+    @JsonProperty("capacity")
     private int ferohely;
 
     public Long getId() {

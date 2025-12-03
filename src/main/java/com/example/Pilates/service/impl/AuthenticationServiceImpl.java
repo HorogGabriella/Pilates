@@ -62,4 +62,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return tokenService.generateToken(f);
 
     }
+
+    @Override
+    public Long getFelhasznaloIdByEmail(String email) {
+        FelhasznaloEntity felhasznalo = repo.findByEmail(email);
+        return felhasznalo.getId();
+    }
 }

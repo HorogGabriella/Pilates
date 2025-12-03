@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/orak")
+@RequestMapping("/api/classes")
+@CrossOrigin(origins = "http://localhost:4200")
 public class OraController {
     private final OraService oraService;
 
@@ -17,7 +18,7 @@ public class OraController {
         this.oraService = oraService;
     }
 
-    @GetMapping("/findall")
+   // @GetMapping("/findall")
     public List<OraDto> getAll(){
         return oraService.getAllClasses();
     }
@@ -38,26 +39,28 @@ public class OraController {
     }
 
     @GetMapping("/init")
-    @PreAuthorize("hasAnyAuthority('Felhasznalo','ADMIN')")
+  //  @PreAuthorize("hasAnyAuthority('ADMIN')")
     public void init() {
-        oraService.createClass(OraDto.builder()
-                .oratipus("reformer pilates")
-                .idopont(LocalDateTime.parse("2025-12-01 09:00"))
-                .oktato("Pap Anna")
-                .ferohely(10)
-                .build());
-        oraService.createClass(OraDto.builder()
-                .oratipus("kezdo pilates")
-                .idopont(LocalDateTime.parse("2025-12-01 14:00"))
-                .oktato("Pap Anna")
-                .ferohely(10)
-                .build());
-        oraService.createClass(OraDto.builder()
-                .oratipus("halado pilates")
-                .idopont(LocalDateTime.parse("2025-12-01 12:00"))
-                .oktato("Pap Anna")
-                .ferohely(10)
-                .build());
+        OraDto ora1 = new OraDto();
+        ora1.setOratipus("reformer pilates");
+        ora1.setIdopont(LocalDateTime.parse("2025-12-01T09:00:00")); // T betű a dátum és idő közé szabványosabb
+        ora1.setOktato("Pap Anna");
+        ora1.setFerohely(10);
+        oraService.createClass(ora1);
+
+        OraDto ora2 = new OraDto();
+        ora2.setOratipus("kezdo pilates");
+        ora2.setIdopont(LocalDateTime.parse("2025-12-01T14:00:00"));
+        ora2.setOktato("Pap Anna");
+        ora2.setFerohely(10);
+        oraService.createClass(ora2);
+
+        OraDto ora3 = new OraDto();
+        ora3.setOratipus("halado pilates");
+        ora3.setIdopont(LocalDateTime.parse("2025-12-01T12:00:00"));
+        ora3.setOktato("Pap Anna");
+        ora3.setFerohely(10);
+        oraService.createClass(ora3);
 
     }
 }

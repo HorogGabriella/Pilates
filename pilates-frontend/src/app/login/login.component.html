@@ -1,0 +1,23 @@
+<mat-card class="login-card">
+  <h2 class="login-title">Login</h2>
+  <form (ngSubmit)="onLogin()" class="login-form">
+
+    <mat-form-field appearance="fill" class="login-input">
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="email" name="email" required placeholder="Enter your email"/>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="login-input">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" [(ngModel)]="password" name="password" required placeholder="Enter your password"/>
+    </mat-form-field>
+
+    <button type="submit" class="login-button">Login</button>
+
+    <div class="registration-link">
+      <p>Do not have an account?
+        <a routerLink="/registration" class="register-link">Register</a>
+      </p>
+    </div>
+  </form>
+</mat-card>

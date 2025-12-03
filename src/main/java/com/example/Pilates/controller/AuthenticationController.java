@@ -3,13 +3,11 @@ package com.example.Pilates.controller;
 import com.example.Pilates.service.AuthenticationService;
 import com.example.Pilates.service.dto.BejelentkezesDto;
 import com.example.Pilates.service.dto.RegisztracioDto;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthenticationController {
 
     private final AuthenticationService authService;
