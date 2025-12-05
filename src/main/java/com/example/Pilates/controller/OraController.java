@@ -2,6 +2,8 @@ package com.example.Pilates.controller;
 
 import com.example.Pilates.service.OraService;
 import com.example.Pilates.service.dto.OraDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,16 +14,22 @@ import java.util.List;
 @RequestMapping("/api/classes")
 @CrossOrigin(origins = "http://localhost:4200")
 public class OraController {
-    private final OraService oraService;
+    @Autowired
+    private OraService oraService;
 
     public OraController(OraService oraService) {
         this.oraService = oraService;
     }
+    @RequestMapping(value = "/**", method = RequestMethod.OPTIONS)
+    public ResponseEntity<Void> handleOptions(){
+        return ResponseEntity.ok().build();
+    }
+   /* @GetMapping("/findall")
 
-   // @GetMapping("/findall")
     public List<OraDto> getAll(){
         return oraService.getAllClasses();
     }
+    */
 
     @PostMapping("/create")
     public OraDto create(@RequestBody OraDto dto){

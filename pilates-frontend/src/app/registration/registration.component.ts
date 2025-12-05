@@ -1,25 +1,24 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-/*import { MatCardModule } from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
- */
-//import { } from '../auth/auth.service';
+
+import { } from '../auth/auth.service';
 import {Router, RouterLink} from '@angular/router';
-//import {EventsService} from '../events.service';
+import {AuthService} from '../auth/auth.service';
+
 
 @Component({
   selector: 'app-registration',
   standalone: true,
   imports: [
     FormsModule,
-    /*
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-     */
     RouterLink
   ],
   templateUrl: './registration.component.html',
@@ -32,7 +31,6 @@ export class RegistrationComponent {
 
   constructor(
     private authService: AuthService,
-    private eventService: EventsService,
     private router: Router) {}
 
   onRegister() {

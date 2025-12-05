@@ -4,7 +4,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { AuthService } from '../auth.service';
+
+import { AuthService } from '../auth/auth.service';
 import {Router, RouterLink} from '@angular/router';
 
 @Component({
@@ -32,7 +33,7 @@ export class LoginComponent {
       (response: any) => {
         localStorage.setItem('token', response)
         console.log('Login Successful');
-        this.router.navigate(['/events']);
+        this.router.navigate(['/']);
       },
       error => {
         console.error('An error occur during login', error)
