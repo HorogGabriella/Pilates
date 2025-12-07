@@ -59,7 +59,6 @@ public class FoglalasServiceImpl implements FoglalasService {
 
         FoglalasEntity saved = foglalasRepo.save(foglalas);
 
-        // ✅ KÉZI DTO KITÖLTÉS
         FoglalasDto dto = new FoglalasDto();
         dto.setFoglalasId(saved.getId());
         dto.setOraId(ora.getId());

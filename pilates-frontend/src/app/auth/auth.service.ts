@@ -11,32 +11,25 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, { email, password }, { responseType: 'text' });
+  login(email: string, password: string) {
+    return this.http.post(
+      `${this.apiUrl}/login`,
+      { email, password },
+      { responseType: 'text' }
+    );
   }
 
-  register(name: string, email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/registration`, {name, email, password}, { responseType: 'text' });
-  }
-
-  getUserEmail(): Observable<string> {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    });
-
-    return this.http.get(`${this.apiUrl}/user-email`, { headers, responseType: 'text' });
+  register(name: string, email: string, password: string) {
+    return this.http.post(
+      `${this.apiUrl}/registration`,
+      { name, email, password },
+      { responseType: 'text' }
+    );
   }
 
   logout(): void {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
-
-  getFelhasznaloIdByEmail(email: string): Observable<number> {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${localStorage.getItem('token')}`,
-    });
-
-    return this.http.get<number>(`${this.apiUrl}/participant-id`, { headers, params: { email } });
-  }
 }
+
