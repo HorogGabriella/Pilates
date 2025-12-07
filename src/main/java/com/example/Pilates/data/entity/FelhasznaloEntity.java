@@ -46,9 +46,15 @@ public class FelhasznaloEntity implements UserDetails {
         return jelszo;
     }
 
+    public String getJelszo() {
+        return jelszo;
+    }
+
+    public Long getId() { return id;}
+
     @Override
     public String getUsername() {
-        return null;
+        return email;
     }
 
     public String getEmail() {
@@ -61,6 +67,10 @@ public class FelhasznaloEntity implements UserDetails {
 
     public void setNev(String nev) {
         this.nev = nev;
+    }
+
+    public String getNev() {
+        return nev;
     }
 
     public void setEmail(String email) {

@@ -3,7 +3,7 @@ package com.example.Pilates.service;
 import com.example.Pilates.service.dto.FoglalasDto;
 
 public interface FoglalasService {
-    FoglalasDto createFoglalas(FoglalasDto foglalasDto);
+    FoglalasDto createFoglalas(Long oraId);
     void cancelFoglalas(Long foglalasId);
     int getOraFoglalasSzama(Long oraId);
 }

@@ -19,4 +19,28 @@ public class RegisztracioDto {
     @NotBlank
     @Size(min = 8, max = 200)
     private String jelszo;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNev() {
+        return nev;
+    }
+
+    public void setNev(String nev) {
+        this.nev = nev;
+    }
+
+    public String getJelszo() {
+        return jelszo;
+    }
+
+    public void setJelszo(String jelszo) {
+        this.jelszo = jelszo;
+    }
 }

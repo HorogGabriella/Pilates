@@ -1,0 +1,112 @@
+/* Teljes oldal keret */
+.page-wrapper {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #f6efe7; /* világos bézs */
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* Oldalcím */
+h1 {
+  text-align: center;
+  color: #2c7f8c; /* sötét menta-kék */
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* Hiba és siker üzenetek */
+.error {
+  color: #a63a3a;
+  background-color: #f9d9d9;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.success {
+  color: #1d6f6f;
+  background-color: #e0f7f4;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Órakártyák grid elrendezése */
+.oras-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+/* Egy óra kártya */
+.ora-card {
+  background-color: #fff9f1; /* világosabb bézs */
+  padding: 1.25rem 1.5rem;
+  border-radius: 14px;
+  border: 1px solid rgba(108, 70, 46, 0.1);
+  box-shadow: 0 4px 12px rgba(108, 70, 46, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+/* Hover hatás */
+.ora-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(108, 70, 46, 0.18);
+}
+
+/* Óra neve */
+.ora-card h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #2c7f8c;
+}
+
+/* Metaadatok */
+.meta {
+  font-size: 0.95rem;
+  color: #4a443d;
+  display: grid;
+  gap: 0.4rem;
+}
+
+/* Foglalás gomb */
+button {
+  margin-top: auto;
+  padding: 0.7rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #4dcedb, #9de0d9);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 4px 12px rgba(77, 206, 219, 0.5);
+}
+
+/* Hover gomb */
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(77, 206, 219, 0.6);
+}
+
+/* Mobile optimizáció */
+@media (max-width: 600px) {
+  .page-wrapper {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+}

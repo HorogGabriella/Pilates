@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "bookings")
 @Getter
@@ -19,8 +17,8 @@ public class FoglalasEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "name", nullable = false)
-    private String resztvevoNeve;
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @ManyToOne
     @JoinColumn(name = "class_session_id")
@@ -38,12 +36,12 @@ public class FoglalasEntity {
         this.id = id;
     }
 
-    public String getResztvevoNeve() {
-        return resztvevoNeve;
+    public String getEmail() {
+        return email;
     }
 
-    public void setResztvevoNeve(String resztvevoNeve) {
-        this.resztvevoNeve = resztvevoNeve;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public OraEntity getOra() {

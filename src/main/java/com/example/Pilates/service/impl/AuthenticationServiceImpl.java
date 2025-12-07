@@ -19,29 +19,43 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-    PasswordEncoder passwordEncoder;
-    FelhasznaloRepository repo;
-    JogosultsagRepository jogrepo;
-    FelhasznaloMapper mapper;
-    AuthenticationManager authManager;
-    TokenService tokenService;
+
+    private final PasswordEncoder passwordEncoder;
+    private final FelhasznaloRepository repo;
+    private final JogosultsagRepository jogrepo;
+    private final FelhasznaloMapper mapper;
+    private final AuthenticationManager authManager;
+    private final TokenService tokenService;
+
+    public AuthenticationServiceImpl(
+            PasswordEncoder passwordEncoder,
+            FelhasznaloRepository repo,
+            JogosultsagRepository jogrepo,
+            FelhasznaloMapper mapper,
+            AuthenticationManager authManager,
+            TokenService tokenService
+    ) {
+        this.passwordEncoder = passwordEncoder;
+        this.repo = repo;
+        this.jogrepo = jogrepo;
+        this.mapper = mapper;
+        this.authManager = authManager;
+        this.tokenService = tokenService;
+    }
 
     @Override
     public void regisztracio(RegisztracioDto regisztracioDto) {
         FelhasznaloEntity e = mapper.regFelh(regisztracioDto);
-        e.setJelszo(passwordEncoder.encode(e.getPassword()));
+        e.setJelszo(passwordEncoder.encode(regisztracioDto.getJelszo()));
 
         JogosultsagEntity jog = jogrepo.findByJog("FELHASZNALO");
-        if(jog != null){
-            e.setJogosultsag(jog);
-        } else {
+        if (jog == null) {
             jog = new JogosultsagEntity();
             jog.setJog("FELHASZNALO");
             jog = jogrepo.save(jog);
-
-            e.setJogosultsag(jog);
         }
 
+        e.setJogosultsag(jog);
         repo.save(e);
     }
 

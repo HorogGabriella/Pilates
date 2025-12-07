@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.Mapping;
 @Mapper(componentModel = "spring")
 public interface FelhasznaloMapper {
 
-    RegisztracioDto reg(FelhasznaloEntity felhasznalo);
+        FelhasznaloEntity regFelh(RegisztracioDto regisztracio);
 
-    @org.mapstruct.Mapping(target = "email", ignore = true)
-    @org.mapstruct.Mapping(target = "jelszo", ignore = true)
-    FelhasznaloEntity regFelh(RegisztracioDto regisztracio);
-}
+        RegisztracioDto reg(FelhasznaloEntity felhasznalo);
+    }
+

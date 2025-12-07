@@ -24,12 +24,13 @@ public class OraController {
     public ResponseEntity<Void> handleOptions(){
         return ResponseEntity.ok().build();
     }
-   /* @GetMapping("/findall")
+
+   @GetMapping("/findall")
 
     public List<OraDto> getAll(){
         return oraService.getAllClasses();
     }
-    */
+
 
     @PostMapping("/create")
     public OraDto create(@RequestBody OraDto dto){
@@ -41,8 +42,8 @@ public class OraController {
         return oraService.updateClass(id, dto);
     }
 
-    @DeleteMapping("/delete")
-    public void delete(@RequestParam Long id){
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable Long id){
         oraService.deleteClass(id);
     }
 
@@ -54,6 +55,7 @@ public class OraController {
         ora1.setIdopont(LocalDateTime.parse("2025-12-01T09:00:00")); // T betű a dátum és idő közé szabványosabb
         ora1.setOktato("Pap Anna");
         ora1.setFerohely(10);
+        ora1.setFoglalthely(4);
         oraService.createClass(ora1);
 
         OraDto ora2 = new OraDto();
@@ -61,6 +63,7 @@ public class OraController {
         ora2.setIdopont(LocalDateTime.parse("2025-12-01T14:00:00"));
         ora2.setOktato("Pap Anna");
         ora2.setFerohely(10);
+        ora2.setFoglalthely(6);
         oraService.createClass(ora2);
 
         OraDto ora3 = new OraDto();
@@ -68,6 +71,7 @@ public class OraController {
         ora3.setIdopont(LocalDateTime.parse("2025-12-01T12:00:00"));
         ora3.setOktato("Pap Anna");
         ora3.setFerohely(10);
+        ora3.setFoglalthely(10);
         oraService.createClass(ora3);
 
     }

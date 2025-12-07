@@ -19,10 +19,13 @@ public class OraDto {
     private String oktato;
     @JsonProperty("classtype")
     private String oratipus;
+
     @JsonProperty("time")
     private LocalDateTime idopont;
     @JsonProperty("capacity")
     private int ferohely;
+    @JsonProperty("bookedspots")
+    private int foglalthely;
 
     public Long getId() {
         return id;
@@ -62,5 +65,12 @@ public class OraDto {
 
     public void setFerohely(int ferohely) {
         this.ferohely = ferohely;
+    }
+    public int getFoglalthely() {
+        return foglalthely;
+    }
+
+    public void setFoglalthely(int foglalthely) {
+        this.foglalthely = foglalthely;
     }
 }

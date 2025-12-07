@@ -1,0 +1,31 @@
+<div class="page-wrapper">
+
+  <h1>Pilates órák</h1>
+
+  <div *ngIf="loading">Betöltés...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+  <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
+
+  <div class="oras-grid" *ngIf="!loading">
+    <div class="ora-card" *ngFor="let ora of sessions">
+
+      <h2>{{ ora.classtype }}</h2>
+
+      <div class="meta">
+        <div><strong>Oktató:</strong> {{ ora.teacher }}</div>
+        <div>
+          <strong>Időpont:</strong>
+          {{ ora.time | date:'yyyy.MM.dd. (EEE) HH:mm' }}
+        </div>
+        <div><strong>Férőhely:</strong> {{ ora.capacity }}</div>
+        <div><strong>Foglalva:</strong> {{ ora.bookedspots }}</div>
+        <div><strong>Szabad helyek:</strong> {{ getFreeSpots(ora) }}</div>
+      </div>
+
+      <button (click)="bookSession(ora)">
+        Foglalás
+      </button>
+
+    </div>
+  </div>
+</div>

@@ -23,17 +23,17 @@ public class FoglalasController {
     }
 
     @GetMapping("/orak/{oraId}/foglalok-szama")
-    public int getBookingCount(@PathVariable Long oraId){
+    public int getOraFoglalasSzama(@PathVariable Long oraId){
         return foglalasService.getOraFoglalasSzama(oraId);
     }
 
-    @PostMapping("/book")
-    public FoglalasDto createBooking(@RequestBody FoglalasDto dto){
-        return foglalasService.createFoglalas(dto);
+    @PostMapping("/book/{oraId}")
+    public FoglalasDto createFoglalas(@PathVariable Long oraId) {
+        return foglalasService.createFoglalas(oraId);
     }
 
-    @DeleteMapping("/delete")
-    public void cancelBooking(@RequestParam Long id){
+    @DeleteMapping("/delete/{id}")
+    public void cancelFoglalas(@PathVariable Long id){
         foglalasService.cancelFoglalas(id);
     }
 }
