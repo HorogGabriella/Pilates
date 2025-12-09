@@ -12,6 +12,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FoglalasServiceImpl implements FoglalasService {
 
@@ -95,4 +97,25 @@ public class FoglalasServiceImpl implements FoglalasService {
         return ora.getFoglalasok().size();
 
     }
+
+    @Override
+    public List<FoglalasDto> getFelhasznaloFoglalasai() {
+
+        String email = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        return foglalasRepo.findByFelhasznaloEmail(email)
+                .stream()
+                .map(f -> {
+                    FoglalasDto dto = new FoglalasDto();
+                    dto.setFoglalasId(f.getId());
+                    dto.setOraId(f.getOra().getId());
+                    dto.setUserEmail(f.getEmail());
+                    return dto;
+                })
+                .toList();
+    }
+
 }

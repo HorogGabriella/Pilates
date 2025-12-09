@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/foglalas")
 public class FoglalasController {
@@ -20,6 +22,11 @@ public class FoglalasController {
     @RequestMapping(value = "/**", method = RequestMethod.OPTIONS)
     public ResponseEntity<Void> handleOptions(){
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<FoglalasDto>> getSajatFoglalasok() {
+        return ResponseEntity.ok(foglalasService.getFelhasznaloFoglalasai());
     }
 
     @GetMapping("/orak/{oraId}/foglalok-szama")

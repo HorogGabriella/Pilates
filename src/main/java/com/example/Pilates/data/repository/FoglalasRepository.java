@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface FoglalasRepository extends JpaRepository<FoglalasEntity, Long> {
     boolean existsByFelhasznaloAndOra(FelhasznaloEntity felhasznalo, OraEntity ora);
+    List<FoglalasEntity> findByFelhasznaloEmail(String email);
 }

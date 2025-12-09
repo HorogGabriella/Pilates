@@ -1,41 +1,45 @@
 <div class="page-wrapper">
 
+  <div class="top-actions">
+    <button class="soft-btn" routerLink="/booking">
+      Foglalásaim
+    </button>
+  </div>
+
   <h1>Pilates órák</h1>
 
-  <!-- Állapotok -->
-  <div *ngIf="loading">Betöltés...</div>
   <div *ngIf="error" class="error">{{ error }}</div>
-  <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
 
-  <!-- Nincs adat -->
-  <div *ngIf="!loading && sessions.length === 0 && !error">
-    Nincs elérhető óra.
-  </div>
+  <ng-container *ngIf="sessions.length > 0; else noData">
 
-  <!-- Órák -->
-  <div class="oras-grid" *ngIf="!loading && sessions.length > 0">
-    <div class="ora-card" *ngFor="let ora of sessions">
+    <div class="oras-grid">
+      <div class="ora-card" *ngFor="let ora of sessions">
 
-      <h2>{{ ora.classtype }}</h2>
-
-      <div class="meta">
-        <div><strong>Oktató:</strong> {{ ora.teacher }}</div>
+        <h2>{{ ora.classtype }}</h2>
 
         <div>
-          <strong>Időpont:</strong>
-          {{ ora.time | date:'yyyy.MM.dd. (EEE) HH:mm' }}
+          Oktató: {{ ora.teacher }}
         </div>
 
-        <div><strong>Férőhely:</strong> {{ ora.capacity }}</div>
-        <div><strong>Foglalva:</strong> {{ ora.bookedspots }}</div>
-        <div><strong>Szabad helyek:</strong> {{ getFreeSpots(ora) }}</div>
+        <div>
+          Időpont:
+          {{ ora.time | date:'yyyy.MM.dd. HH:mm' }}
+        </div>
+
+        <div>
+          Szabad helyek: {{ ora.capacity - ora.bookedspots }}
+        </div>
+
+        <button (click)="bookSession(ora)">
+          Foglalás
+        </button>
+
       </div>
-
-      <button (click)="bookSession(ora)">
-        Foglalás
-      </button>
-
     </div>
-  </div>
+  </ng-container>
+
+  <ng-template #noData>
+    <div>Nincs elérhető óra.</div>
+  </ng-template>
 
 </div>

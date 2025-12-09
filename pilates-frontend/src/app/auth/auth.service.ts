@@ -28,7 +28,7 @@ export class AuthService {
     );
   }
 
-  /** 🔐 aktuális user email lekérdezése */
+
   getUserEmail(): Observable<string> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -36,6 +36,7 @@ export class AuthService {
 
     return this.http.get(`${this.apiUrl}/user-email`, { headers, responseType: 'text' });
   }
+
 
   logout(): void {
     localStorage.removeItem('token');

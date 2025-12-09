@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule, NgIf, NgFor } from '@angular/common';
-
+import { RouterLink } from '@angular/router';
 export interface Booking {
   foglalasId: number;
   oraId: number;
-  resztvevoNeve: string;
+  userEmail: string;
 }
 
 @Component({
   selector: 'app-booking',
   standalone: true,
-  imports: [CommonModule, NgIf, NgFor],
+  imports: [CommonModule, NgIf, NgFor,RouterLink],
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.css']
 })
@@ -25,7 +25,6 @@ export class BookingComponent implements OnInit {
   private readonly API_BASE = "http://localhost:8080/api";
 
   constructor(private http: HttpClient) {}
-
   ngOnInit(): void {
     this.loadBookings();
   }
@@ -52,7 +51,7 @@ export class BookingComponent implements OnInit {
     this.error = '';
     this.infoMessage = '';
 
-    this.http.delete(`${this.API_BASE}/foglalas/${f.foglalasId}`)
+    this.http.delete(`${this.API_BASE}/foglalas/delete/${f.foglalasId}`)
       .subscribe({
         next: () => {
           this.infoMessage = 'Foglalás sikeresen törölve.';

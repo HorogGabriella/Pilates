@@ -1,6 +1,12 @@
 <div class="page-wrapper">
 
-  <h1>Foglalásaim</h1>
+  <div class="top-actions">
+    <button class="soft-btn" routerLink="/class">
+      Pilates órák
+    </button>
+  </div>
+
+  <h1 class="page-title">Foglalásaim</h1>
 
   @if (loading) {
     <div>Betöltés...</div>
@@ -15,7 +21,7 @@
   }
 
   @if (!loading && foglalasok.length === 0) {
-    <p class="empty">Jelenleg nincs egyetlen foglalásod sem. 🌿</p>
+    <p class="empty">Jelenleg nincs egyetlen foglalásod sem.</p>
   }
 
   @if (!loading && foglalasok.length > 0) {
@@ -28,11 +34,13 @@
           <div class="main-info">
             <div><strong>Foglalás ID:</strong> {{ foglalas.foglalasId }}</div>
             <div><strong>Óra ID:</strong> {{ foglalas.oraId }}</div>
-            <div><strong>Résztvevő:</strong> {{ foglalas.resztvevoNeve }}</div>
+            <div><strong>Résztvevő:</strong> {{ foglalas.userEmail }}</div>
           </div>
 
           <div class="actions">
-            <button (click)="cancelBooking(foglalas)">Lemondás</button>
+            <button (click)="cancelBooking(foglalas)">
+              Lemondás
+            </button>
           </div>
 
         </div>

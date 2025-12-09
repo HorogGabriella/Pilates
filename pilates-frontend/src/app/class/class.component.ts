@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule, NgIf, NgFor } from '@angular/common';
 import { AuthService } from '../auth/auth.service';
+import { finalize } from 'rxjs/operators';
+import { RouterLink } from '@angular/router';
+
 
 interface ClassSession {
   id: number;
@@ -17,7 +20,7 @@ interface ClassSession {
   templateUrl: './class.component.html',
   styleUrls: ['./class.component.css'],
   standalone: true,
-  imports: [CommonModule, NgIf, NgFor]
+  imports: [CommonModule, NgIf, NgFor, RouterLink]
 })
 export class ClassComponent implements OnInit {
 
@@ -25,8 +28,7 @@ export class ClassComponent implements OnInit {
   loading = false;
   error = '';
   successMessage = '';
-
-  currentUserEmail: string = '';
+  currentUserEmail = '';
 
   private readonly API_BASE = 'http://localhost:8080/api/classes';
 
@@ -41,24 +43,24 @@ export class ClassComponent implements OnInit {
   }
 
   getCurrentUserEmail(): void {
-    this.loading = true;
-    this.authService.getUserEmail().subscribe({
-      next: (email) => {
-        this.currentUserEmail = email;
-        //this.loadSessions();
+    this.authService.getUserEmail().subscribe(
+      (response) => {
+        this.currentUserEmail = response;
       },
-      error: (err) => {
-        console.error('Failed to fetch user email:', err);
-        this.error = 'Nem vagy bejelentkezve.';
+      () => {
+        console.warn('User email nem elérhető');
       }
-    });
+    );
   }
 
-
   loadSessions(): void {
-    this.http.get<any[]>(`${this.API_BASE}/findall`).subscribe({
-      next: data => {
-        this.sessions = data.map(s => ({
+    this.error = '';
+
+    this.http.get<any[]>(`${this.API_BASE}/findall`).subscribe(
+      (response) => {
+        console.log('Classes:', response);
+
+        this.sessions = response.map(s => ({
           ...s,
           time: new Date(
             s.time[0],
@@ -68,13 +70,12 @@ export class ClassComponent implements OnInit {
             s.time[4]
           )
         }));
-        this.loading = false;
       },
-      error: () => {
-        this.error = 'Nem sikerült betölteni az órákat';
-        this.loading = false;
+      (err) => {
+        console.error(err);
+        this.error = 'Nem sikerült betölteni az órákat.';
       }
-    });
+    );
   }
 
   bookSession(session: ClassSession): void {
@@ -83,17 +84,15 @@ export class ClassComponent implements OnInit {
 
     const body = { classSessionId: session.id };
 
-    this.http.post(`${this.API_BASE}/foglalas`, body)
-      .subscribe(
-        (response: any) => {
-          this.successMessage = 'Foglalás sikeres! 😊';
-          this.loadSessions();
-        },
-        () => {
-          this.error =
-            'Nem sikerült lefoglalni az órát. Lehet, hogy betelt az óra.';
-        }
-      );
+    this.http.post(`http://localhost:8080/api/foglalas/book/${session.id}`,{}).subscribe(
+      () => {
+        this.successMessage = 'Foglalás sikeres!';
+        this.loadSessions();
+      },
+      () => {
+        this.error = 'Nem sikerült lefoglalni az órát. Lehet, hogy betelt.';
+      }
+    );
   }
 
   getFreeSpots(session: ClassSession): number {
