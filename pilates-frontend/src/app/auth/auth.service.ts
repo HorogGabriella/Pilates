@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -7,24 +7,34 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
+
   private apiUrl = 'http://localhost:8080/auth';
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(email: string, password: string) {
+  login(email: string, password: string): Observable<string> {
     return this.http.post(
-      `${this.apiUrl}/login`,
-      { email, password },
+      `${this.apiUrl}/bejelentkezes`,
+      { email, jelszo: password },
       { responseType: 'text' }
     );
   }
 
-  register(name: string, email: string, password: string) {
+  register(name: string, email: string, password: string): Observable<string> {
     return this.http.post(
-      `${this.apiUrl}/registration`,
-      { name, email, password },
+      `${this.apiUrl}/regisztracio`,
+      { nev: name, email, jelszo: password },
       { responseType: 'text' }
     );
+  }
+
+  /** 🔐 aktuális user email lekérdezése */
+  getUserEmail(): Observable<string> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+
+    return this.http.get(`${this.apiUrl}/user-email`, { headers, responseType: 'text' });
   }
 
   logout(): void {
@@ -32,4 +42,3 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 }
-

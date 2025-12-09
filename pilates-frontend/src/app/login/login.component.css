@@ -56,3 +56,11 @@
 .registration-link a:hover {
   text-decoration: underline;
 }
+
+.login-error {
+  color: #f44336;
+  text-align: center;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+

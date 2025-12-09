@@ -2,21 +2,30 @@
 
   <h1>Pilates órák</h1>
 
+  <!-- Állapotok -->
   <div *ngIf="loading">Betöltés...</div>
   <div *ngIf="error" class="error">{{ error }}</div>
   <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
 
-  <div class="oras-grid" *ngIf="!loading">
+  <!-- Nincs adat -->
+  <div *ngIf="!loading && sessions.length === 0 && !error">
+    Nincs elérhető óra.
+  </div>
+
+  <!-- Órák -->
+  <div class="oras-grid" *ngIf="!loading && sessions.length > 0">
     <div class="ora-card" *ngFor="let ora of sessions">
 
       <h2>{{ ora.classtype }}</h2>
 
       <div class="meta">
         <div><strong>Oktató:</strong> {{ ora.teacher }}</div>
+
         <div>
           <strong>Időpont:</strong>
           {{ ora.time | date:'yyyy.MM.dd. (EEE) HH:mm' }}
         </div>
+
         <div><strong>Férőhely:</strong> {{ ora.capacity }}</div>
         <div><strong>Foglalva:</strong> {{ ora.bookedspots }}</div>
         <div><strong>Szabad helyek:</strong> {{ getFreeSpots(ora) }}</div>
@@ -28,4 +37,5 @@
 
     </div>
   </div>
+
 </div>

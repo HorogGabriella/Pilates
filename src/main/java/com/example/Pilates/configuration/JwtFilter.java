@@ -34,9 +34,11 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        // 🔥 EZ A KULCS – AUTH végpontokat kihagyjuk
         String path = request.getServletPath();
-        if (path.startsWith("/auth")) {
+        if (
+                path.equals("/auth/bejelentkezes") ||
+                        path.equals("/auth/regisztracio")
+        ) {
             filterChain.doFilter(request, response);
             return;
         }

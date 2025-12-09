@@ -16,6 +16,11 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
+
+
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -45,6 +50,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void regisztracio(RegisztracioDto regisztracioDto) {
+
+        if (repo.findByEmail(regisztracioDto.getEmail()) != null) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Ezzel az e-mail címmel már létezik fiók"
+            );
+        }
+
+        if (regisztracioDto.getJelszo() == null ||
+                regisztracioDto.getJelszo().length() < 8) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "A jelszónak legalább 8 karakter hosszúnak kell lennie"
+            );
+        }
+
         FelhasznaloEntity e = mapper.regFelh(regisztracioDto);
         e.setJelszo(passwordEncoder.encode(regisztracioDto.getJelszo()));
 
@@ -59,23 +80,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         repo.save(e);
     }
 
+
     @Override
-    public String bejelentkezes(BejelentkezesDto bejelentkezesDto) {
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        Authentication auth = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        bejelentkezesDto.getEmail(),
-                        bejelentkezesDto.getJelszo()
-                )
-        );
-        context.setAuthentication(auth);
-        SecurityContextHolder.setContext(context);
+    public String bejelentkezes(BejelentkezesDto dto) {
 
-        FelhasznaloEntity f =
-                repo.findByEmail(bejelentkezesDto.getEmail());
-        return tokenService.generateToken(f);
+        FelhasznaloEntity felhasznalo = repo.findByEmail(dto.getEmail());
 
+        if (felhasznalo == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    "Ezzel az e-mail címmel még nincs regisztráció"
+            );
+        }
+
+        try {
+            Authentication auth = authManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            dto.getEmail(),
+                            dto.getJelszo()
+                    )
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(auth);
+
+            return tokenService.generateToken(felhasznalo);
+
+        } catch (BadCredentialsException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    "Hibás jelszó"
+            );
+        }
     }
+
 
     @Override
     public Long getFelhasznaloIdByEmail(String email) {
