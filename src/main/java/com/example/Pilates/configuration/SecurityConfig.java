@@ -36,10 +36,12 @@ public class SecurityConfig {
                 .cors(withDefaults -> {})   // WebConfig kezeli a CORS-ot
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()      // REG + LOGIN szabad
-                        .requestMatchers("/h2/**").permitAll()      // H2 Console szabad
-                        //.requestMatchers("/api/**").permitAll()     // torolni
-                        .anyRequest().authenticated()                 // minden más: JWT kell
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/h2/**").permitAll()
+
+                        .requestMatchers("/api/classes/**").authenticated()
+                        .requestMatchers("/api/foglalas/**").authenticated()
+                        .anyRequest().authenticated()
                 )
 
                 .sessionManagement(sess -> sess.sessionCreationPolicy(STATELESS))
