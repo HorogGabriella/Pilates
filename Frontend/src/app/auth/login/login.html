@@ -1,0 +1,39 @@
+<div class="login-wrapper">
+  <div class="login-card">
+
+    <h2>Bejelentkezés</h2>
+
+    <form (ngSubmit)="onLogin()">
+
+      <input
+        type="email"
+        placeholder="Email cím"
+        [(ngModel)]="email"
+        name="email"
+      />
+
+      <input
+        type="password"
+        placeholder="Jelszó"
+        [(ngModel)]="password"
+        name="password"
+      />
+
+      <!-- Hibaüzenet -->
+      <p class="error" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </p>
+
+      <!-- GOMB – EZ HIÁNYZOTT -->
+      <button type="submit">
+        Bejelentkezés
+      </button>
+    </form>
+
+    <p class="register-link">
+      Még nincs fiókod?
+      <a routerLink="/register">Regisztráció</a>
+    </p>
+
+  </div>
+</div>

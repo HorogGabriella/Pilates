@@ -1,0 +1,26 @@
+<nav class="navbar">
+  <span class="logo">Pilates</span>
+
+  <div class="menu">
+    <button routerLink="/classes">Pilates órák</button>
+    <button (click)="logout()">Kijelentkezés</button>
+  </div>
+</nav>
+
+<div class="container">
+  <h2>Foglalásaim</h2>
+
+  <p class="message error" *ngIf="message">
+    {{ message }}
+  </p>
+
+  <div class="booking-card" *ngFor="let b of bookings">
+    <p class="date">
+      {{ b.datum | date:'yyyy.MM.dd (EEEE) HH:mm' }}
+    </p>
+  </div>
+
+  <p class="empty" *ngIf="bookings.length === 0">
+    Még nincs egyetlen foglalásod sem.
+  </p>
+</div>
