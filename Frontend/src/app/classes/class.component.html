@@ -1,12 +1,13 @@
-<!-- Felső menü -->
+
 <nav class="navbar">
-  <span class="logo">Pilates</span>
+  <span class="logo">Menü</span>
 
   <div class="menu">
     <button routerLink="/booking">Foglalásaim</button>
     <button (click)="logout()">Kijelentkezés</button>
   </div>
 </nav>
+
 
 <div class="container">
   <h2>Pilates órák</h2>
@@ -15,30 +16,30 @@
     {{ message }}
   </p>
 
-  <div class="class-card" *ngFor="let c of classes">
+  <p *ngIf="loading">Betöltés...</p>
+
+  <div class="class-card" *ngFor="let c of sessions">
     <div class="info">
+      <p class="type">{{ c.classtype }}</p>
+      <p class="teacher">{{ c.teacher }}</p>
       <p class="date">
-        {{ c.datum | date:'yyyy.MM.dd (EEEE) HH:mm' }}
+        {{ c.time | date:'yyyy.MM.dd (EEEE) HH:mm' }}
       </p>
 
       <p class="slots">
         Szabad férőhely:
-        <strong>{{ getFreeSlots(c) }}</strong>
+        <strong>{{ getFreeSpots(c) }}</strong>
       </p>
-
-    <p class="already" *ngIf="isAlreadyBooked(c)">
-      ✔ Már jelentkeztél erre az órára
-    </p>
-  </div>
+    </div>
 
     <button
-      [disabled]="getFreeSlots(c) === 0"
+      [disabled]="getFreeSpots(c) === 0"
       (click)="bookClass(c)">
       Jelentkezés
     </button>
   </div>
 
-  <p class="empty" *ngIf="classes.length === 0">
+  <p class="empty" *ngIf="sessions.length === 0 && !loading">
     Jelenleg nincs elérhető pilates óra.
   </p>
 </div>

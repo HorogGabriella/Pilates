@@ -1,0 +1,34 @@
+<div class="login-wrapper">
+  <div class="login-card">
+
+    <h2>Regisztráció</h2>
+
+    <input
+      type="text"
+      placeholder="Felhasználónév"
+      [(ngModel)]="name"
+    />
+
+    <input
+      type="email"
+      placeholder="Email cím"
+      [(ngModel)]="email"
+    />
+
+    <input
+      type="password"
+      placeholder="Jelszó (min. 8 karakter)"
+      [(ngModel)]="password"
+    />
+
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+
+    <button (click)="onRegister()">Regisztráció</button>
+
+    <p class="register-link">
+      <a routerLink="/login">Vissza a bejelentkezéshez</a>
+    </p>
+
+  </div>
+</div>

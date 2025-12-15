@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 
-import { LoginComponent } from './auth/login/login';
-import { RegisterComponent } from './auth/register/register';
-import { ClassesListComponent } from './classes/classes-list/classes-list';
-import { BookingListComponent } from './booking/booking-list/booking-list';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
+import {ClassComponent} from './classes/class.component';
+import { BookingListComponent } from './booking/booking.component';
 
 import { authGuard } from './auth/auth-guard';
 
@@ -13,7 +13,7 @@ export const routes: Routes = [
 
   {
     path: 'classes',
-    component: ClassesListComponent,
+    component: ClassComponent,
     canActivate: [authGuard]
   },
   {
@@ -22,6 +22,6 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
 
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' }
 ];

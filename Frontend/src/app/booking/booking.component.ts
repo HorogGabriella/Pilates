@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
-import { Auth } from '../../auth/auth';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
-  selector: 'app-booking-list',
+  selector: 'app-booking',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './booking-list.html',
-  styleUrls: ['./booking-list.css']
+  templateUrl: './booking.component.html',
+  styleUrls: ['./booking.component.css']
 })
 export class BookingListComponent implements OnInit {
 
@@ -19,7 +19,7 @@ export class BookingListComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private auth: Auth,
+    private auth: AuthService,
     private router: Router
   ) {}
 

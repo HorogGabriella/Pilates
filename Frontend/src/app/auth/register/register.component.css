@@ -1,24 +1,26 @@
-:root {
+:host {
   --beige: #f5f1e8;
   --mint: #7bc8a4;
   --mint-dark: #5aa88a;
   --text: #333;
+  display: block;
 }
 
 .login-wrapper {
-  height: 100vh;
+  min-height: 100vh;
   background-color: var(--beige);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 24px;
 }
 
 .login-card {
-  background-color: white;
+  background-color: #ffffff;
   padding: 40px;
   border-radius: 18px;
   width: 360px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
   text-align: center;
 }
 
@@ -34,19 +36,20 @@
   border-radius: 10px;
   border: 1px solid #ccc;
   font-size: 14px;
+  box-sizing: border-box;
 }
 
 .login-card button {
   width: 100%;
   padding: 12px;
+  margin-top: 10px;
   border: none;
   border-radius: 10px;
   background-color: var(--mint);
-  color: white;
+  color: #ffffff;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 10px;
 }
 
 .login-card button:hover {
@@ -59,13 +62,13 @@
   margin-bottom: 10px;
 }
 
+.success {
+  color: #2ecc71;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
 .register-link {
   margin-top: 20px;
   font-size: 14px;
-}
-
-.register-link a {
-  color: var(--mint-dark);
-  text-decoration: none;
-  font-weight: bold;
 }

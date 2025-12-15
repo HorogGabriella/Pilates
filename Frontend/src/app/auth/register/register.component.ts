@@ -1,17 +1,20 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Auth } from '../auth';
 import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { AuthService } from '../auth.service';
+
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './register.html',
-  styleUrls: ['./register.css']
+  imports: [CommonModule, FormsModule, RouterModule],
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
+  name ='';
   email = '';
   password = '';
 
@@ -20,16 +23,17 @@ export class RegisterComponent {
   successMessage = '';
 
   constructor(
-    private auth: Auth,
+    private auth: AuthService,
     private router: Router
   ) {}
 
   onRegister() {
-    this.submitted = true;
+    console.log('REGISZTRÁCIÓ GOMB MEGNYOMVA');
+
     this.errorMessage = '';
     this.successMessage = '';
 
-    if (!this.email || !this.password) {
+    if (!this.email || !this.password || !this.name) {
       this.errorMessage = 'Kérlek tölts ki minden mezőt!';
       return;
     }
@@ -39,10 +43,13 @@ export class RegisterComponent {
       return;
     }
 
-    this.auth.register(this.email, this.password).subscribe({
+    this.auth.register(this.name, this.email, this.password).subscribe({
       next: () => {
         this.successMessage = 'Sikeres regisztráció! Átirányítás...';
-        setTimeout(() => this.router.navigate(['/login']), 1500);
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 1500);
+
       },
       error: (err) => {
         if (err.status === 409) {
