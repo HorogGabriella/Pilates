@@ -38,11 +38,7 @@ export class LoginComponent {
 
     this.auth.login(this.email, this.password).subscribe({
       next: () => {
-        this.successMessage = 'Sikeres bejelentkezés!';
-
-        setTimeout(() => {
-          this.router.navigate(['/classes']);
-        }, 1500);
+        this.router.navigate(['/classes']);
       },
       error: (err) => {
 

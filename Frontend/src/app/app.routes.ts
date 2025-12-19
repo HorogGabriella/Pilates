@@ -6,6 +6,7 @@ import {ClassComponent} from './classes/class.component';
 import { BookingListComponent } from './booking/booking.component';
 
 import { authGuard } from './auth/auth-guard';
+import {classResolver} from './classes/class.resolver';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -14,7 +15,10 @@ export const routes: Routes = [
   {
     path: 'classes',
     component: ClassComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    resolve: {
+      sessions: classResolver
+    }
   },
   {
     path: 'booking',

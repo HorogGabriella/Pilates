@@ -1,17 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
-
-interface ClassSession {
-  id: number;
-  classtype: string;
-  teacher: string;
-  time: string;          // ⬅️ STRING (LocalDateTime JSON)
-  capacity: number;
-  bookedspots: number;
-}
+import { ClassService } from './class.service';
+import { ClassSession } from './class.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -24,30 +17,44 @@ export class ClassComponent implements OnInit {
 
   sessions: ClassSession[] = [];
   loading = true;
+
   message = '';
   error = '';
 
-  private API_BASE = 'http://localhost:8080/api/classes';
+  currentUserEmail = '';
 
   constructor(
-    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router,
     private auth: AuthService,
-    private router: Router
+    private classes: ClassService
   ) {}
 
   ngOnInit(): void {
-    this.loadSessions();
+    this.sessions = this.route.snapshot.data['sessions'];
+    this.loading = false;
   }
 
   loadSessions(): void {
-    this.http.get<ClassSession[]>(`${this.API_BASE}/findall`).subscribe({
+    this.loading = true;
+    this.error = '';
+
+    this.classes.getAll().subscribe({
       next: data => {
+        console.log('SESSIONS FROM BACKEND:', data);
+
         this.sessions = data;
         this.loading = false;
       },
-      error: () => {
-        this.error = 'Nem sikerült betölteni az órákat';
+      error: (err) => {
         this.loading = false;
+
+        if (err.status === 401 || err.status === 403) {
+          this.error = 'Nincs jogosultságod az órák megtekintéséhez. Jelentkezz be.';
+          return;
+        }
+
+        this.error = 'Nem sikerült betölteni az órákat';
       }
     });
   }
@@ -57,16 +64,33 @@ export class ClassComponent implements OnInit {
   }
 
   bookClass(c: ClassSession): void {
-    this.http.post(`http://localhost:8080/api/foglalas/book/${c.id}`, {})
-      .subscribe({
-        next: () => {
-          this.message = 'Sikeres jelentkezés!';
-          this.loadSessions();
-        },
-        error: err => {
-          this.message = err.error?.message || 'Nem sikerült a jelentkezés';
+    this.message = '';
+    this.error = '';
+
+    this.classes.book(c.id).subscribe({
+      next: () => {
+        this.message = 'Sikeres jelentkezés!';
+        this.loadSessions();
+      },
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          this.error = 'A jelentkezéshez be kell jelentkezned.';
+          return;
         }
-      });
+        this.error = err.error?.message || 'Nem sikerült a jelentkezés';
+      }
+    });
+  }
+
+  getCurrentUserEmail(): void {
+    this.auth.getUserEmail().subscribe({
+      next: (email) => {
+        this.currentUserEmail = email || '';
+      },
+      error: (err) => {
+
+      }
+    });
   }
 
   logout(): void {

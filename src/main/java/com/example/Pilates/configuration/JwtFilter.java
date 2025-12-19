@@ -35,26 +35,32 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String path = request.getServletPath();
 
-        if (path.startsWith("/auth/")) {
+        if (
+                path.equals("/auth/bejelentkezes") ||
+                        path.equals("/auth/regisztracio") ||
+                        request.getMethod().equalsIgnoreCase("OPTIONS")
+        ) {
             filterChain.doFilter(request, response);
             return;
         }
 
+
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            filterChain.doFilter(request, response);
             return;
         }
 
         String token = authHeader.substring(7);
         String userEmail = tokenService.extractUsername(token);
 
-        if (userEmail != null
-                && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (userEmail != null &&
+                SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails =
-                    userService.getUserDetailService().loadUserByUsername(userEmail);
+                    userService.getUserDetailService()
+                            .loadUserByUsername(userEmail);
 
             if (tokenService.validateToken(token, userDetails)) {
 
@@ -66,10 +72,13 @@ public class JwtFilter extends OncePerRequestFilter {
                         );
 
                 authentication.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
+                        new WebAuthenticationDetailsSource()
+                                .buildDetails(request)
                 );
 
-                SecurityContext context = SecurityContextHolder.createEmptyContext();
+                SecurityContext context =
+                        SecurityContextHolder.createEmptyContext();
+
                 context.setAuthentication(authentication);
                 SecurityContextHolder.setContext(context);
             }

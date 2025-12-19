@@ -52,7 +52,7 @@ public class OraController {
     public void init() {
         OraDto ora1 = new OraDto();
         ora1.setOratipus("reformer pilates");
-        ora1.setIdopont(LocalDateTime.parse("2025-12-01T09:00:00")); // T betű a dátum és idő közé szabványosabb
+        ora1.setIdopont(LocalDateTime.parse("2025-12-01T09:00:00"));
         ora1.setOktato("Pap Anna");
         ora1.setFerohely(10);
         ora1.setFoglalthely(4);

@@ -37,15 +37,21 @@ h2 {
   color: var(--text);
 }
 
-.class-card {
-  background: white;
-  padding: 18px;
-  border-radius: 16px;
-  margin-bottom: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+.message {
+  text-align: center;
+  margin: 10px 0 18px;
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+
+.message.success {
+  background: #e9f7ef;
+  color: #1e7e34;
+}
+
+.message.error {
+  background: #fdecea;
+  color: #b02a37;
 }
 
 .info {
@@ -90,3 +96,11 @@ h2 {
   margin-top: 30px;
   color: #777;
 }
+.class-card {
+  padding: 1rem;
+  margin: 1rem 0;
+  display: block;
+  background: #f9f9f9;
+  color: black;
+}
+

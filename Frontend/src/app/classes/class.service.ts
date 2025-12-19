@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ClassComponent } from './class.component';
+import { ClassSession } from './class.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,13 @@ export class ClassService {
   constructor(private http: HttpClient) {}
 
   getAll() {
-    return this.http.get<ClassComponent[]>(`${this.apiUrl}/findall`);
+    return this.http.get<ClassSession[]>(`${this.apiUrl}/findall`);
+  }
+
+  book(classId: number) {
+    return this.http.post(
+      `http://localhost:8080/api/foglalas/book/${classId}`,
+      {}
+    );
   }
 }
