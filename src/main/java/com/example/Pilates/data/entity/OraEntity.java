@@ -30,6 +30,18 @@ public class OraEntity {
     @Column(name = "capacity")
     private int ferohely;
 
+    public int getFoglalthely() {
+        return foglalthely;
+    }
+
+    public void setFoglalthely(int foglalthely) {
+        this.foglalthely = foglalthely;
+    }
+
+    @Column (name = "bookedspots")
+    private int foglalthely;
+
+
     //kapcsolat a FoglalasEntityvel, ha az órát törlöm vagy módosítom, a hozzá tartozó foglalások is, ha egy foglalást kiveszek a listából akkor automatikusan törlődik az adatbáziból
     @OneToMany(mappedBy = "ora", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FoglalasEntity> foglalasok = new ArrayList<>();

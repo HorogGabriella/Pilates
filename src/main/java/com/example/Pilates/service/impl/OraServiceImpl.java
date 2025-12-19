@@ -28,9 +28,21 @@ public class OraServiceImpl implements OraService {
     public List<OraDto> getAllClasses() {
         return orarepo.findAll()
                 .stream()
-                .map(e -> mapper.map(e,OraDto.class))
+                .map(ora -> {
+                    OraDto dto = new OraDto();
+                    dto.setId(ora.getId());
+                    dto.setOktato(ora.getOktato());
+                    dto.setOratipus(ora.getOratipus());
+                    dto.setIdopont(ora.getIdopont());
+                    dto.setFerohely(ora.getFerohely());
+                    dto.setFoglalthely(
+                            ora.getFoglalasok() == null ? 0 : ora.getFoglalasok().size()
+                    );
+                    return dto;
+                })
                 .toList();
     }
+
 
    /* @Override
     public OraDto getClassByTime(LocalDateTime idopont) {

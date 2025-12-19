@@ -11,10 +11,12 @@ import com.example.Pilates.service.dto.FoglalasDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class FoglalasServiceImpl implements FoglalasService {
 
     private final FoglalasRepository foglalasRepo;
@@ -68,6 +70,7 @@ public class FoglalasServiceImpl implements FoglalasService {
 
         return dto;
     }
+
 
 
 

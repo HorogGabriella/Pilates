@@ -22,6 +22,7 @@ public class FoglalasController {
         return ResponseEntity.ok().build();
     }
 
+
     @GetMapping
     public ResponseEntity<List<FoglalasDto>> getSajatFoglalasok() {
         return ResponseEntity.ok(
@@ -38,7 +39,7 @@ public class FoglalasController {
         );
     }
 
-    @PostMapping("/{oraId}")
+    @PostMapping("/book/{oraId}")
     public ResponseEntity<FoglalasDto> createFoglalas(
             @PathVariable Long oraId
     ) {

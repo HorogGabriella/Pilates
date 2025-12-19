@@ -70,7 +70,10 @@ export class ClassComponent implements OnInit {
     this.classes.book(c.id).subscribe({
       next: () => {
         this.message = 'Sikeres jelentkezés!';
-        this.loadSessions();
+
+        this.classes.getAll().subscribe(data => {
+          this.sessions = data;
+        });
       },
       error: (err) => {
         if (err.status === 401 || err.status === 403) {
