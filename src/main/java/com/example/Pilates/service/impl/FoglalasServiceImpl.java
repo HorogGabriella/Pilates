@@ -63,15 +63,18 @@ public class FoglalasServiceImpl implements FoglalasService {
 
         FoglalasEntity saved = foglalasRepo.save(foglalas);
 
+        ora.setFoglalthely(ora.getFoglalthely() + 1);
+        oraRepo.save(ora);
+
         FoglalasDto dto = new FoglalasDto();
         dto.setFoglalasId(saved.getId());
         dto.setOraId(ora.getId());
-        dto.setUserEmail(saved.getEmail());
+        dto.setOratipus(ora.getOratipus());
+        dto.setOktato(ora.getOktato());
+        dto.setIdopont(ora.getIdopont());
 
         return dto;
     }
-
-
 
 
     @Override
@@ -89,7 +92,12 @@ public class FoglalasServiceImpl implements FoglalasService {
             throw new RuntimeException("Nem törölheted más foglalását");
         }
 
+        OraEntity ora = foglalas.getOra();
+
         foglalasRepo.delete(foglalas);
+
+        ora.setFoglalthely(Math.max(0, ora.getFoglalthely() - 1));
+        oraRepo.save(ora);
     }
 
 
@@ -112,13 +120,19 @@ public class FoglalasServiceImpl implements FoglalasService {
         return foglalasRepo.findByFelhasznaloEmail(email)
                 .stream()
                 .map(f -> {
+                    OraEntity ora = f.getOra();
+
                     FoglalasDto dto = new FoglalasDto();
                     dto.setFoglalasId(f.getId());
-                    dto.setOraId(f.getOra().getId());
-                    dto.setUserEmail(f.getEmail());
+                    dto.setOraId(ora.getId());
+                    dto.setOratipus(ora.getOratipus());
+                    dto.setOktato(ora.getOktato());
+                    dto.setIdopont(ora.getIdopont());
+
                     return dto;
                 })
                 .toList();
     }
+
 
 }

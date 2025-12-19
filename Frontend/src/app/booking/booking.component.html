@@ -1,5 +1,5 @@
 <nav class="navbar">
-  <span class="logo">Pilates</span>
+  <span class="logo">Menü</span>
 
   <div class="menu">
     <button routerLink="/classes">Pilates órák</button>
@@ -10,14 +10,22 @@
 <div class="container">
   <h2>Foglalásaim</h2>
 
-  <p class="message error" *ngIf="message">
-    {{ message }}
-  </p>
+  <p class="message success" *ngIf="message">{{ message }}</p>
+  <p class="message error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
-  <div class="booking-card" *ngFor="let b of bookings">
-    <p class="date">
-      {{ b.datum | date:'yyyy.MM.dd (EEEE) HH:mm' }}
-    </p>
+  <div *ngFor="let b of bookings" class="booking-card">
+    <div class="info">
+      <p class="type"><strong>{{ b.oratipus }}</strong></p>
+      <p class="teacher">{{ b.oktato }}</p>
+      <p class="date">{{ b.idopont | date:'yyyy.MM.dd (EEEE) HH:mm' }}</p>
+    </div>
+
+    <button
+      class="cancel"
+      [disabled]="cancellingId === b.foglalasId"
+      (click)="cancelBooking(b.foglalasId)">
+      {{ cancellingId === b.foglalasId ? 'Lemondás…' : 'Lemondás' }}
+    </button>
   </div>
 
   <p class="empty" *ngIf="bookings.length === 0">

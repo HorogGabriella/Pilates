@@ -3,10 +3,11 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import {ClassComponent} from './classes/class.component';
-import { BookingListComponent } from './booking/booking.component';
+import { BookingComponent } from './booking/booking.component';
 
 import { authGuard } from './auth/auth-guard';
 import {classResolver} from './classes/class.resolver';
+import {bookingResolver} from './booking/booking.resolver';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -17,13 +18,19 @@ export const routes: Routes = [
     component: ClassComponent,
     canActivate: [authGuard],
     resolve: {
-      sessions: classResolver
-    }
+      data: classResolver
+    },
+    runGuardsAndResolvers: 'always'
   },
+
   {
     path: 'booking',
-    component: BookingListComponent,
-    canActivate: [authGuard]
+    component: BookingComponent,
+    canActivate: [authGuard],
+    resolve: {
+      bookings: bookingResolver
+    },
+    runGuardsAndResolvers: 'always'
   },
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },

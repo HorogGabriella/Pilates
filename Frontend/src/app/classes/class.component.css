@@ -26,9 +26,27 @@
   background-color: var(--mint-dark);
 }
 
+.btn-book {
+  background-color: var(--mint);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn-book:hover { background-color: var(--mint-dark); }
+
+.btn-booked,
+.btn-book:disabled {
+  background: #b9b9b9;
+  cursor: not-allowed;
+}
+
 .container {
   max-width: 650px;
   margin: 40px auto;
+  padding: 0 12px;
 }
 
 h2 {
@@ -54,9 +72,24 @@ h2 {
   color: #b02a37;
 }
 
+.class-card {
+  padding: 16px;
+  margin: 14px 0;
+  border-radius: 16px;
+  background: var(--beige);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
 .info {
   display: flex;
   flex-direction: column;
+  gap: 6px;
+  flex: 1;
 }
 
 .date {
@@ -66,6 +99,7 @@ h2 {
 .type {
   color: var(--mint-dark);
   font-weight: bold;
+  font-size: 16px;
 }
 
 .teacher {
@@ -77,16 +111,27 @@ h2 {
   margin-top: 6px;
 }
 
-.class-card button {
+.join-btn {
   background-color: var(--mint);
   color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 10px;
+  padding: 10px 16px;
+  border-radius: 12px;
   cursor: pointer;
+  white-space: nowrap;
+  font-size: 14px;
 }
 
-.class-card button:disabled {
+.join-btn:hover {
+  background-color: var(--mint-dark);
+}
+
+.join-btn.joined {
+  background-color: #4a90e2;
+  cursor: default;
+}
+
+.join-btn:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
@@ -96,11 +141,3 @@ h2 {
   margin-top: 30px;
   color: #777;
 }
-.class-card {
-  padding: 1rem;
-  margin: 1rem 0;
-  display: block;
-  background: #f9f9f9;
-  color: black;
-}
-

@@ -35,9 +35,7 @@ public class OraServiceImpl implements OraService {
                     dto.setOratipus(ora.getOratipus());
                     dto.setIdopont(ora.getIdopont());
                     dto.setFerohely(ora.getFerohely());
-                    dto.setFoglalthely(
-                            ora.getFoglalasok() == null ? 0 : ora.getFoglalasok().size()
-                    );
+                    dto.setFoglalthely(ora.getFoglalthely());
                     return dto;
                 })
                 .toList();

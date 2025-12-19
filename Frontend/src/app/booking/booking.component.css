@@ -7,7 +7,6 @@
   --text: #333;
 }
 
-
 .navbar {
   background-color: var(--beige);
   padding: 14px 24px;
@@ -30,68 +29,114 @@
   padding: 8px 14px;
   border-radius: 8px;
   cursor: pointer;
+  font-size: 14px;
 }
 
 .menu button:hover {
   background-color: var(--mint-dark);
 }
 
-/* Tartalom */
 .container {
-  max-width: 600px;
+  max-width: 650px;
   margin: 40px auto;
+  padding: 0 12px;
 }
 
 h2 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   color: var(--text);
+  font-size: 28px;
 }
 
-.booking-card {
-  background: white;
-  padding: 16px;
-  border-radius: 14px;
-  margin-bottom: 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.date {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.cancel {
-  background-color: var(--danger);
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.cancel:hover {
-  background-color: var(--danger-dark);
-}
 
 .message {
   text-align: center;
   margin-bottom: 15px;
+  font-size: 14px;
 }
 
-.success {
+.message.success {
   color: var(--mint-dark);
 }
 
-.error {
+.message.error {
   color: var(--danger);
 }
 
+.booking-card {
+  background: var(--beige);
+  padding: 18px 20px;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.type {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--mint-dark);
+}
+
+.teacher {
+  font-size: 14px;
+  color: #555;
+}
+
+.date {
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--text);
+}
+
+.cancel {
+  background-color: var(--mint);
+  color: #fff;
+  border: 1px solid var(--mint);
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.cancel:hover {
+  background-color: var(--mint-dark);
+  border-color: var(--mint-dark);
+}
+
+
+
 .empty {
   text-align: center;
-  margin-top: 30px;
+  margin-top: 40px;
   color: #777;
+  font-size: 15px;
+}
+
+
+@media (max-width: 600px) {
+  .booking-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cancel {
+    align-self: flex-end;
+    margin-top: 10px;
+  }
 }

@@ -23,7 +23,7 @@ public class FoglalasController {
     }
 
 
-    @GetMapping
+    @GetMapping("/sajat")
     public ResponseEntity<List<FoglalasDto>> getSajatFoglalasok() {
         return ResponseEntity.ok(
                 foglalasService.getFelhasznaloFoglalasai()

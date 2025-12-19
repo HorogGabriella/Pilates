@@ -10,38 +10,40 @@
 <div class="container">
   <h2>Pilates órák</h2>
 
-  <pre>{{ sessions | json }}</pre>
-
   <p class="message success" *ngIf="message">{{ message }}</p>
   <p class="message error" *ngIf="error">{{ error }}</p>
 
   <p *ngIf="loading">Betöltés...</p>
 
   <div *ngIf="!loading">
-  <div class="class-card" *ngFor="let c of sessions">
-    <div class="info">
-      <p class="type">{{ c.classtype }}</p>
-      <p class="teacher">{{ c.teacher }}</p>
+    <div class="class-card" *ngFor="let c of sessions">
+      <div class="info">
+        <p class="type">{{ c.classtype }}</p>
+        <p class="teacher">{{ c.teacher }}</p>
 
-      <p class="date">
-        {{ c.time | date:'yyyy.MM.dd (EEEE) HH:mm' }}
-      </p>
+        <p class="date">
+          {{ c.time | date:'yyyy.MM.dd (EEEE) HH:mm' }}
+        </p>
 
-      <p class="slots">
-        Szabad hely:
-        <strong>{{ getFreeSpots(c) }}</strong>
-      </p>
+        <p class="slots">
+          Szabad férőhely:
+          <strong>{{ getFreeSpots(c) }}</strong>
+        </p>
+      </div>
+
+      <button
+        class="btn-book"
+        [class.btn-booked]="isBooked(c)"
+        [disabled]="isBooked(c) || getFreeSpots(c) <= 0 || inFlightIds.has(c.id)"
+        (click)="bookClass(c)"
+      >
+        {{ isBooked(c) ? 'Jelentkezve' : 'Jelentkezés' }}
+      </button>
+
     </div>
 
-    <button
-      [disabled]="getFreeSpots(c) === 0"
-      (click)="bookClass(c)">
-      Jelentkezés
-    </button>
+    <p class="empty" *ngIf="sessions.length === 0 && !error">
+      Jelenleg nincs elérhető pilates óra.
+    </p>
   </div>
-
-  <p class="empty" *ngIf="sessions.length === 0 && !loading && !error">
-    Jelenleg nincs elérhető pilates óra.
-  </p>
-</div>
 </div>

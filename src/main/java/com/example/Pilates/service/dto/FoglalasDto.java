@@ -2,6 +2,8 @@ package com.example.Pilates.service.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -11,7 +13,9 @@ import lombok.*;
 public class FoglalasDto {
     private Long foglalasId;
     private Long oraId;
-    private String userEmail;
+    private String oratipus;
+    private String oktato;
+    private LocalDateTime idopont;
 
     public Long getFoglalasId() {
         return foglalasId;
@@ -21,19 +25,35 @@ public class FoglalasDto {
         this.foglalasId = foglalasId;
     }
 
-    public void setOraId(Long oraId) {
-        this.oraId = oraId;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
     public Long getOraId() {
         return oraId;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public void setOraId(Long oraId) {
+        this.oraId = oraId;
+    }
+
+    public String getOratipus() {
+        return oratipus;
+    }
+
+    public void setOratipus(String oratipus) {
+        this.oratipus = oratipus;
+    }
+
+    public String getOktato() {
+        return oktato;
+    }
+
+    public void setOktato(String oktato) {
+        this.oktato = oktato;
+    }
+
+    public LocalDateTime getIdopont() {
+        return idopont;
+    }
+
+    public void setIdopont(LocalDateTime idopont) {
+        this.idopont = idopont;
     }
 }

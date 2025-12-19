@@ -1,8 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { HttpClient } from '@angular/common/http';
+import { finalize } from 'rxjs/operators';
+
+export interface BookingDto {
+  foglalasId: number;
+  oraId: number;
+  oratipus: string;
+  oktato: string;
+  idopont: string;
+}
 
 @Component({
   selector: 'app-booking',
@@ -11,59 +20,72 @@ import { AuthService } from '../auth/auth.service';
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.css']
 })
-export class BookingListComponent implements OnInit {
+export class BookingComponent implements OnInit {
 
-  bookings: any[] = [];
-  message: string = '';
-  errorMessage: string = '';
+  bookings: BookingDto[] = [];
+  message = '';
+  errorMessage = '';
+
+  // csak az épp lemondott sor legyen "loading"
+  cancellingId: number | null = null;
+
+  private readonly api = 'http://localhost:8080/api/foglalas';
 
   constructor(
-    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router,
     private auth: AuthService,
-    private router: Router
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
-    this.loadBookings();
+    this.route.data.subscribe(data => {
+      const bookings = (data['bookings'] ?? []) as BookingDto[];
+      this.bookings = this.sortByDate(bookings);
+    });
   }
 
-  loadBookings(): void {
+  private sortByDate(list: BookingDto[]): BookingDto[] {
+    return [...list].sort(
+      (a, b) => new Date(a.idopont).getTime() - new Date(b.idopont).getTime()
+    );
+  }
+
+  private refreshFromBackend(): void {
+    this.http.get<BookingDto[]>(`${this.api}/sajat`).subscribe({
+      next: (data) => (this.bookings = this.sortByDate(data)),
+      error: () => {
+      }
+    });
+  }
+
+  cancelBooking(foglalasId: number): void {
     this.message = '';
     this.errorMessage = '';
 
-    this.http
-      .get<any[]>('http://localhost:8080/api/foglalas/sajat')
-      .subscribe({
-        next: (data) => {
-          this.bookings = data.sort(
-            (a, b) =>
-              new Date(a.datum).getTime() -
-              new Date(b.datum).getTime()
-          );
-        },
-        error: () => {
-          this.errorMessage = 'Nem sikerült betölteni a foglalásaidat.';
-        }
-      });
-  }
+    if (!confirm('Biztosan le szeretnéd mondani ezt az órát?')) return;
 
-  cancelBooking(bookingId: number): void {
-    this.message = '';
-    this.errorMessage = '';
+    const id = Number(foglalasId);
+    this.cancellingId = id;
 
-    if (!confirm('Biztosan le szeretnéd mondani ezt az órát?')) {
-      return;
-    }
+    this.bookings = this.bookings.filter(b => Number(b.foglalasId) !== id);
 
     this.http
-      .delete(`http://localhost:8080/api/foglalas/${bookingId}`)
+      .delete<void>(`${this.api}/${id}`)
+      .pipe(finalize(() => (this.cancellingId = null))) // ✅ sose ragadjon be
       .subscribe({
         next: () => {
           this.message = 'Foglalás sikeresen lemondva.';
-          this.loadBookings(); // 🔁 frissítés
+          setTimeout(() => (this.message = ''), 1500);
+
+          this.refreshFromBackend();
         },
-        error: () => {
-          this.errorMessage = 'Nem sikerült lemondani a foglalást.';
+        error: (err) => {
+          this.errorMessage =
+            (typeof err?.error === 'string' ? err.error : '') ||
+            `Nem sikerült lemondani. (${err.status})`;
+
+          this.refreshFromBackend();
         }
       });
   }

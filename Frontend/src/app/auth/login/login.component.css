@@ -3,6 +3,8 @@
   --mint: #7bc8a4;
   --mint-dark: #5aa88a;
   --text: #333;
+  --danger: #e74c3c;
+  --danger-dark: #c0392b;
   display: block;
 }
 
@@ -37,8 +39,16 @@
   border: 1px solid #ccc;
   font-size: 14px;
   box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+.login-card input:focus {
+  border-color: var(--mint-dark);
+  box-shadow: 0 0 0 3px rgba(123, 200, 164, 0.35);
+}
+
+/* ✅ MENTA gomb */
 .login-card button {
   width: 100%;
   padding: 12px;
@@ -50,22 +60,36 @@
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
+  transition: transform 0.05s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 6px 14px rgba(90, 168, 138, 0.25);
 }
 
 .login-card button:hover {
   background-color: var(--mint-dark);
+  box-shadow: 0 8px 18px rgba(90, 168, 138, 0.28);
+}
+
+.login-card button:active {
+  transform: translateY(1px);
+}
+
+/* ha később letiltanád pl. üres mezőknél */
+.login-card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .error {
-  color: #c0392b;
+  color: var(--danger-dark);
   font-size: 14px;
-  margin-bottom: 10px;
+  margin: 0 0 10px;
 }
 
 .success {
   color: #2ecc71;
   font-size: 14px;
-  margin-bottom: 10px;
+  margin: 0 0 10px;
 }
 
 .register-link {
@@ -77,4 +101,8 @@
   color: var(--mint-dark);
   text-decoration: none;
   font-weight: bold;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
 }

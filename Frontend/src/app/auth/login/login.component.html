@@ -3,30 +3,33 @@
 
     <h2>Bejelentkezés</h2>
 
-    <form (ngSubmit)="onLogin()">
+    <input
+      type="email"
+      placeholder="Email cím"
+      [(ngModel)]="email"
+      name="email"
+      autocomplete="email"
+    />
 
-      <input
-        type="email"
-        placeholder="Email cím"
-        [(ngModel)]="email"
-        name="email"
-      />
+    <input
+      type="password"
+      placeholder="Jelszó"
+      [(ngModel)]="password"
+      name="password"
+      autocomplete="current-password"
+    />
 
-      <input
-        type="password"
-        placeholder="Jelszó"
-        [(ngModel)]="password"
-        name="password"
-      />
+    <p class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </p>
 
-      <p class="error" *ngIf="errorMessage">
-        {{ errorMessage }}
-      </p>
+    <p class="success" *ngIf="successMessage">
+      {{ successMessage }}
+    </p>
 
-      <button type="submit">
-        Bejelentkezés
-      </button>
-    </form>
+    <button type="button" (click)="onLogin()">
+      Bejelentkezés
+    </button>
 
     <p class="register-link">
       Még nincs fiókod?

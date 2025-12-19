@@ -44,20 +44,14 @@ export class RegisterComponent {
     }
 
     this.auth.register(this.name, this.email, this.password).subscribe({
-      next: () => {
-        this.successMessage = 'Sikeres regisztráció! Átirányítás...';
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 1500);
-
-      },
-      error: (err) => {
-        if (err.status === 409) {
-          this.errorMessage = 'Ezzel az email címmel már regisztráltak.';
-        } else {
-          this.errorMessage = 'Hiba történt a regisztráció során.';
+      next: (res: any) => {
+        if (res?.success === false) {
+          this.errorMessage = res.message ?? 'Hiba történt a regisztráció során.';
+          return;
         }
-      }
-    });
+        this.successMessage = 'Sikeres regisztráció! Átirányítás...';
+        setTimeout(() => this.router.navigate(['/login']), 1500);
+      },
+    })
   }
 }

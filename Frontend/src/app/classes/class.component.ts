@@ -1,10 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { finalize } from 'rxjs/operators';
+
 import { AuthService } from '../auth/auth.service';
 import { ClassService } from './class.service';
 import { ClassSession } from './class.model';
-import { ActivatedRoute } from '@angular/router';
+
+export interface BookingDto {
+  foglalasId: number;
+  oraId: number;          // <<< EZ KELL
+  oratipus: string;
+  oktato: string;
+  idopont: string;
+}
 
 @Component({
   standalone: true,
@@ -18,45 +28,65 @@ export class ClassComponent implements OnInit {
   sessions: ClassSession[] = [];
   loading = true;
 
+  bookedIds = new Set<number>();
+  inFlightIds = new Set<number>();
+
   message = '';
   error = '';
-
-  currentUserEmail = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private auth: AuthService,
-    private classes: ClassService
+    private classes: ClassService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
-    this.sessions = this.route.snapshot.data['sessions'];
+    const resolved = this.route.snapshot.data['data'];
+    const sessions = resolved?.sessions ?? [];
+    const bookings = resolved?.bookings ?? [];
+
+    this.sessions = this.sortByDate(sessions);
+    this.bookedIds = new Set(bookings.map((b: any) => b.oraId)); // oraId!
     this.loading = false;
+  }
+
+  private sortByDate(list: ClassSession[]): ClassSession[] {
+    return [...list].sort(
+      (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
+    );
+  }
+
+  private refreshBookedIds(): void {
+    this.http.get<BookingDto[]>('http://localhost:8080/api/foglalas/sajat').subscribe({
+      next: (bookings) => {
+        this.bookedIds = new Set(bookings.map(b => b.oraId));
+      },
+      error: () => {
+        this.bookedIds = new Set<number>();
+      }
+    });
+  }
+
+  isBooked(c: ClassSession): boolean {
+    return this.bookedIds.has(c.id);
   }
 
   loadSessions(): void {
     this.loading = true;
-    this.error = '';
 
-    this.classes.getAll().subscribe({
-      next: data => {
-        console.log('SESSIONS FROM BACKEND:', data);
-
-        this.sessions = data;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.loading = false;
-
-        if (err.status === 401 || err.status === 403) {
-          this.error = 'Nincs jogosultságod az órák megtekintéséhez. Jelentkezz be.';
-          return;
+    this.classes.getAll()
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: (data) => {
+          this.sessions = this.sortByDate(data);
+          this.refreshBookedIds();
+        },
+        error: () => {
+          this.error = 'Nem sikerült betölteni az órákat';
         }
-
-        this.error = 'Nem sikerült betölteni az órákat';
-      }
-    });
+      });
   }
 
   getFreeSpots(c: ClassSession): number {
@@ -67,33 +97,34 @@ export class ClassComponent implements OnInit {
     this.message = '';
     this.error = '';
 
-    this.classes.book(c.id).subscribe({
-      next: () => {
-        this.message = 'Sikeres jelentkezés!';
+    if (this.inFlightIds.has(c.id) || this.isBooked(c)) return;
 
-        this.classes.getAll().subscribe(data => {
-          this.sessions = data;
-        });
-      },
-      error: (err) => {
-        if (err.status === 401 || err.status === 403) {
-          this.error = 'A jelentkezéshez be kell jelentkezned.';
-          return;
+    this.inFlightIds.add(c.id);
+
+    this.classes.book(c.id)
+      .pipe(finalize(() => this.inFlightIds.delete(c.id)))
+      .subscribe({
+        next: () => {
+          this.message = 'Sikeres jelentkezés!';
+          this.bookedIds.add(c.id);
+
+          const s = this.sessions.find(x => x.id === c.id);
+          if (s) {
+            s.bookedspots = (s.bookedspots ?? 0) + 1;
+            this.sessions = [...this.sessions]; // kényszerített UI frissítés
+          }
+
+          this.loadSessions();
+          setTimeout(() => (this.message = ''), 1500);
+        },
+        error: (err) => {
+          this.loadSessions();
+          this.refreshBookedIds();
+
+          this.error = (typeof err?.error === 'string' ? err.error : '') || 'Nem sikerült a jelentkezés.';
+          setTimeout(() => (this.error = ''), 2500);
         }
-        this.error = err.error?.message || 'Nem sikerült a jelentkezés';
-      }
-    });
-  }
-
-  getCurrentUserEmail(): void {
-    this.auth.getUserEmail().subscribe({
-      next: (email) => {
-        this.currentUserEmail = email || '';
-      },
-      error: (err) => {
-
-      }
-    });
+      });
   }
 
   logout(): void {
