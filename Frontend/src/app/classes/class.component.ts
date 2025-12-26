@@ -10,7 +10,7 @@ import { ClassSession } from './class.model';
 
 export interface BookingDto {
   foglalasId: number;
-  oraId: number;          // <<< EZ KELL
+  oraId: number;
   oratipus: string;
   oktato: string;
   idopont: string;
@@ -48,7 +48,7 @@ export class ClassComponent implements OnInit {
     const bookings = resolved?.bookings ?? [];
 
     this.sessions = this.sortByDate(sessions);
-    this.bookedIds = new Set(bookings.map((b: any) => b.oraId)); // oraId!
+    this.bookedIds = new Set(bookings.map((b: any) => b.oraId));
     this.loading = false;
   }
 
@@ -97,35 +97,36 @@ export class ClassComponent implements OnInit {
     this.message = '';
     this.error = '';
 
-    if (this.inFlightIds.has(c.id) || this.isBooked(c)) return;
+    if (this.inFlightIds.has(c.id) || this.isBooked(c) || this.getFreeSpots(c) <= 0) return;
 
     this.inFlightIds.add(c.id);
+
+    this.bookedIds.add(c.id);
+    c.bookedspots = (c.bookedspots ?? 0) + 1;
+    this.sessions = [...this.sessions];
 
     this.classes.book(c.id)
       .pipe(finalize(() => this.inFlightIds.delete(c.id)))
       .subscribe({
         next: () => {
           this.message = 'Sikeres jelentkezés!';
-          this.bookedIds.add(c.id);
-
-          const s = this.sessions.find(x => x.id === c.id);
-          if (s) {
-            s.bookedspots = (s.bookedspots ?? 0) + 1;
-            this.sessions = [...this.sessions]; // kényszerített UI frissítés
-          }
-
-          this.loadSessions();
           setTimeout(() => (this.message = ''), 1500);
+
+          this.refreshBookedIds();
         },
         error: (err) => {
-          this.loadSessions();
-          this.refreshBookedIds();
+          this.bookedIds.delete(c.id);
+          c.bookedspots = Math.max(0, (c.bookedspots ?? 0) - 1);
+          this.sessions = [...this.sessions];
 
           this.error = (typeof err?.error === 'string' ? err.error : '') || 'Nem sikerült a jelentkezés.';
           setTimeout(() => (this.error = ''), 2500);
+
+          this.refreshBookedIds();
         }
       });
   }
+
 
   logout(): void {
     this.auth.logout();
