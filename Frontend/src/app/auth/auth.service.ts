@@ -22,6 +22,10 @@ export class AuthService {
     );
   }
 
+  getMe() {
+    return this.http.get<{email: string, roles: string[]}>( 'http://localhost:8080/auth/me' );
+  }
+
   register(name: string, email: string, password: string): Observable<string> {
     return this.http.post(
       `${this.apiUrl}/regisztracio`,

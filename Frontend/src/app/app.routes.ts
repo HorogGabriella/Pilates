@@ -2,12 +2,14 @@ import { Routes } from '@angular/router';
 
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
-import {ClassComponent} from './classes/class.component';
+import { ClassComponent } from './classes/class.component';
 import { BookingComponent } from './booking/booking.component';
+import { AdminComponent } from './admin/admin.component';
 
-import { authGuard } from './auth/auth-guard';
-import {classResolver} from './classes/class.resolver';
-import {bookingResolver} from './booking/booking.resolver';
+import { authGuard, adminGuard } from './auth/auth-guard';
+import { classResolver } from './classes/class.resolver';
+import { bookingResolver } from './booking/booking.resolver';
+import { adminResolver } from './admin/admin.resolver';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -17,9 +19,7 @@ export const routes: Routes = [
     path: 'classes',
     component: ClassComponent,
     canActivate: [authGuard],
-    resolve: {
-      data: classResolver
-    },
+    resolve: { data: classResolver },
     runGuardsAndResolvers: 'always'
   },
 
@@ -27,9 +27,15 @@ export const routes: Routes = [
     path: 'booking',
     component: BookingComponent,
     canActivate: [authGuard],
-    resolve: {
-      bookings: bookingResolver
-    },
+    resolve: { bookings: bookingResolver },
+    runGuardsAndResolvers: 'always'
+  },
+
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [authGuard, adminGuard],
+    resolve: { classes: adminResolver },
     runGuardsAndResolvers: 'always'
   },
 

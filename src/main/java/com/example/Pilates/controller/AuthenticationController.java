@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
@@ -32,5 +34,13 @@ public class AuthenticationController {
     @GetMapping("/user-email")
     public String getUserEmail(Authentication authentication) {
         return authentication.getName();
+    }
+
+    @GetMapping("/me")
+    public Map<String, Object> me(Authentication auth) {
+        return Map.of(
+                "email", auth.getName(),
+                "roles", auth.getAuthorities().stream().map(a -> a.getAuthority()).toList()
+        );
     }
 }

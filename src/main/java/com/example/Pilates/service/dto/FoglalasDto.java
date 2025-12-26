@@ -16,6 +16,24 @@ public class FoglalasDto {
     private String oratipus;
     private String oktato;
     private LocalDateTime idopont;
+    private String email;
+    private String nev;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNev() {
+        return nev;
+    }
+
+    public void setNev(String nev) {
+        this.nev = nev;
+    }
 
     public Long getFoglalasId() {
         return foglalasId;

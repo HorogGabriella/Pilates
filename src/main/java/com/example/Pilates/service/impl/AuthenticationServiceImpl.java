@@ -69,10 +69,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         FelhasznaloEntity e = mapper.regFelh(regisztracioDto);
         e.setJelszo(passwordEncoder.encode(regisztracioDto.getJelszo()));
 
-        JogosultsagEntity jog = jogrepo.findByJog("FELHASZNALO");
+        JogosultsagEntity jog = jogrepo.findByJog("USER");
         if (jog == null) {
             jog = new JogosultsagEntity();
-            jog.setJog("FELHASZNALO");
+            jog.setJog("USER");
             jog = jogrepo.save(jog);
         }
 

@@ -38,18 +38,19 @@ export class LoginComponent {
 
     this.auth.login(this.email, this.password).subscribe({
       next: () => {
-        this.router.navigate(['/classes']);
-      },
-      error: (err) => {
-
-        if (err.status === 404) {
-          this.errorMessage = 'Ezzel az email címmel nincs regisztráció.';
-        } else if (err.status === 401 || err.status === 403) {
-          this.errorMessage = 'Hibás jelszó.';
-        } else {
-          this.errorMessage = 'Hiba történt a bejelentkezés során.';
-        }
+        this.auth.getMe().subscribe({
+          next: (me) => {
+            if (me.roles?.includes('ADMIN')) {
+              this.router.navigate(['/admin']);
+            } else {
+              this.router.navigate(['/classes']);
+            }
+          },
+          error: (err) => {
+              this.errorMessage = 'Hibás email-cím vagy jelszó.Vagy még nem regisztráltál.';
+            }
+        });
       }
-    });
+    })
   }
 }

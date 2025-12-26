@@ -15,7 +15,6 @@ public class OraServiceImpl implements OraService {
 
     private final OraRepository orarepo;
     private final ModelMapper mapper;
-
     private final OraMapper oraMapper;
 
     public OraServiceImpl(OraRepository orarepo, ModelMapper mapper, OraMapper oraMapper) {
@@ -70,6 +69,6 @@ public class OraServiceImpl implements OraService {
 
     @Override
     public void deleteClass(Long id) {
-        orarepo.deleteClass(id);
+        orarepo.deleteById(id);
     }
 }
