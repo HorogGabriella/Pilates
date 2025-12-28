@@ -37,12 +37,13 @@ export class ClassComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private auth: AuthService,
+    public auth: AuthService,
     private classes: ClassService,
     private http: HttpClient
   ) {}
 
   ngOnInit(): void {
+    this.auth.loadMe().subscribe();
     const resolved = this.route.snapshot.data['data'];
     const sessions = resolved?.sessions ?? [];
     const bookings = resolved?.bookings ?? [];
@@ -90,8 +91,9 @@ export class ClassComponent implements OnInit {
   }
 
   getFreeSpots(c: ClassSession): number {
-    return c.capacity - c.bookedspots;
+    return Math.max(0, (c.capacity ?? 0) - (c.bookedspots ?? 0));
   }
+
 
   bookClass(c: ClassSession): void {
     this.message = '';

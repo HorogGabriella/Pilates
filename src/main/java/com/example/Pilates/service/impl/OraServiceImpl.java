@@ -67,6 +67,7 @@ public class OraServiceImpl implements OraService {
         return oraMapper.oraEntityToDto(e);
     }
 
+
     @Override
     public void deleteClass(Long id) {
         orarepo.deleteById(id);

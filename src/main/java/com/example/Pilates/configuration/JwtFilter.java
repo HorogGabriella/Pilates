@@ -27,63 +27,71 @@ public class JwtFilter extends OncePerRequestFilter {
     private FelhasznaloService userService;
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) return true;
+
+        if ("/auth/bejelentkezes".equals(path)) return true;
+        if ("/auth/regisztracio".equals(path)) return true;
+
+        if (path.startsWith("/h2")) return true;
+        if ("/error".equals(path)) return true;
+
+        return false;
+    }
+
+    @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        String path = request.getServletPath();
+        try {
+            String authHeader = request.getHeader("Authorization");
 
-        if (
-                path.equals("/auth/bejelentkezes") ||
-                        path.equals("/auth/regisztracio") ||
-                        request.getMethod().equalsIgnoreCase("OPTIONS")
-        ) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-
-        String authHeader = request.getHeader("Authorization");
-
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        String token = authHeader.substring(7);
-        String userEmail = tokenService.extractUsername(token);
-
-        if (userEmail != null &&
-                SecurityContextHolder.getContext().getAuthentication() == null) {
-
-            UserDetails userDetails =
-                    userService.getUserDetailService()
-                            .loadUserByUsername(userEmail);
-
-            if (tokenService.validateToken(token, userDetails)) {
-
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities()
-                        );
-
-                authentication.setDetails(
-                        new WebAuthenticationDetailsSource()
-                                .buildDetails(request)
-                );
-
-                SecurityContext context =
-                        SecurityContextHolder.createEmptyContext();
-
-                context.setAuthentication(authentication);
-                SecurityContextHolder.setContext(context);
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                filterChain.doFilter(request, response);
+                return;
             }
-        }
 
-        filterChain.doFilter(request, response);
+            String token = authHeader.substring(7);
+
+            String userEmail = tokenService.extractUsername(token);
+
+            if (userEmail != null &&
+                    SecurityContextHolder.getContext().getAuthentication() == null) {
+
+                UserDetails userDetails =
+                        userService.getUserDetailService()
+                                .loadUserByUsername(userEmail);
+
+                if (tokenService.validateToken(token, userDetails)) {
+
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails,
+                                    null,
+                                    userDetails.getAuthorities()
+                            );
+
+                    authentication.setDetails(
+                            new WebAuthenticationDetailsSource()
+                                    .buildDetails(request)
+                    );
+
+                    SecurityContext context = SecurityContextHolder.createEmptyContext();
+                    context.setAuthentication(authentication);
+                    SecurityContextHolder.setContext(context);
+                }
+            }
+
+            filterChain.doFilter(request, response);
+
+        } catch (Exception ex) {
+            SecurityContextHolder.clearContext();
+            filterChain.doFilter(request, response);
+        }
     }
 }

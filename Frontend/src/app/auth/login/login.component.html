@@ -9,6 +9,8 @@
       [(ngModel)]="email"
       name="email"
       autocomplete="email"
+      required
+      (keyup.enter)="onLogin()"
     />
 
     <input
@@ -17,6 +19,8 @@
       [(ngModel)]="password"
       name="password"
       autocomplete="current-password"
+      required
+      (keyup.enter)="onLogin()"
     />
 
     <p class="error" *ngIf="errorMessage">
@@ -27,7 +31,11 @@
       {{ successMessage }}
     </p>
 
-    <button type="button" (click)="onLogin()">
+    <button
+      type="button"
+      (click)="onLogin()"
+      [disabled]="!email || !password"
+    >
       Bejelentkezés
     </button>
 

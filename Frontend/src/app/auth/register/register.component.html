@@ -7,24 +7,47 @@
       type="text"
       placeholder="Felhasználónév"
       [(ngModel)]="name"
+      name="name"
+      autocomplete="name"
+      required
+      (keyup.enter)="onRegister()"
     />
 
     <input
       type="email"
       placeholder="Email cím"
       [(ngModel)]="email"
+      name="email"
+      autocomplete="email"
+      required
+      (keyup.enter)="onRegister()"
     />
 
     <input
       type="password"
       placeholder="Jelszó (min. 8 karakter)"
       [(ngModel)]="password"
+      name="password"
+      autocomplete="new-password"
+      required
+      (keyup.enter)="onRegister()"
     />
 
-    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
-    <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+    <p class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </p>
 
-    <button (click)="onRegister()">Regisztráció</button>
+    <p class="success" *ngIf="successMessage">
+      {{ successMessage }}
+    </p>
+
+    <button
+      type="button"
+      (click)="onRegister()"
+      [disabled]="!name || !email || !password"
+    >
+      Regisztráció
+    </button>
 
     <p class="register-link">
       <a routerLink="/login">Vissza a bejelentkezéshez</a>

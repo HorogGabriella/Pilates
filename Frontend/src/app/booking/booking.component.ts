@@ -26,7 +26,6 @@ export class BookingComponent implements OnInit {
   message = '';
   errorMessage = '';
 
-  // csak az épp lemondott sor legyen "loading"
   cancellingId: number | null = null;
 
   private readonly api = 'http://localhost:8080/api/foglalas';
@@ -72,7 +71,7 @@ export class BookingComponent implements OnInit {
 
     this.http
       .delete<void>(`${this.api}/${id}`)
-      .pipe(finalize(() => (this.cancellingId = null))) // ✅ sose ragadjon be
+      .pipe(finalize(() => (this.cancellingId = null)))
       .subscribe({
         next: () => {
           this.message = 'Foglalás sikeresen lemondva.';

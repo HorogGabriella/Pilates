@@ -2,6 +2,9 @@
   <span class="logo">Menü</span>
 
   <div class="menu">
+    <button *ngIf="auth.isAdmin()" routerLink="/admin" type="button">
+      Admin
+    </button>
     <button routerLink="/booking">Foglalásaim</button>
     <button (click)="logout()">Kijelentkezés</button>
   </div>
