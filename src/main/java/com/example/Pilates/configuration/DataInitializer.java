@@ -57,27 +57,27 @@ public class DataInitializer {
             }
 
             OraDto ora1 = new OraDto();
-            ora1.setOratipus("Reformer pilates");
+            ora1.setOratipus("Stretching");
             ora1.setIdopont(LocalDateTime.parse("2025-12-02T09:00"));
             ora1.setOktato("Pap Anna");
             ora1.setFerohely(10);
-            ora1.setFoglalthely(1);
+            ora1.setFoglalthely(0);
             oraService.createClass(ora1);
 
             OraDto ora2 = new OraDto();
-            ora2.setOratipus("Kezdő pilates");
+            ora2.setOratipus("Kezdő reformer");
             ora2.setIdopont(LocalDateTime.parse("2025-12-01T09:00"));
-            ora2.setOktato("Pap Anna");
-            ora2.setFerohely(10);
-            ora2.setFoglalthely(6);
+            ora2.setOktato("Nagy Ildikó");
+            ora2.setFerohely(0);
+            ora2.setFoglalthely(0);
             oraService.createClass(ora2);
 
             OraDto ora3 = new OraDto();
-            ora3.setOratipus("Haladó pilates");
+            ora3.setOratipus("Funkcionális reformer");
             ora3.setIdopont(LocalDateTime.parse("2025-12-01T12:00"));
             ora3.setOktato("Pap Anna");
             ora3.setFerohely(10);
-            ora3.setFoglalthely(10);
+            ora3.setFoglalthely(0);
             oraService.createClass(ora3);
 
         };

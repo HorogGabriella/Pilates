@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -13,7 +12,6 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-
   email = '';
   password = '';
 
@@ -21,11 +19,14 @@ export class LoginComponent {
   errorMessage = '';
   successMessage = '';
 
+  isLoading = false;
+
   constructor(
     private auth: AuthService,
-    private router: Router
-  ) {
-  }
+    private router: Router,
+    private zone: NgZone,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   onLogin(): void {
     this.submitted = true;
@@ -34,48 +35,69 @@ export class LoginComponent {
 
     if (!this.email || !this.password) {
       this.errorMessage = 'Kérlek tölts ki minden mezőt!';
+      this.cdr.detectChanges();
       return;
     }
 
+    this.isLoading = true;
+
     this.auth.login(this.email, this.password).subscribe({
       next: (res) => {
-        const text = (res ?? '').trim();
+        this.zone.run(() => {
+          this.isLoading = false;
 
-        // ha a backend véletlen nem JWT-t ad vissza, azt is kezeljük
-        const looksLikeJwt = text.split('.').length === 3;
-        if (!looksLikeJwt) {
-          this.errorMessage = text || 'Hibás email-cím vagy jelszó. Vagy még nem regisztráltál.';
-          return;
-        }
+          const text = String(res ?? '').trim();
+          const looksLikeJwt = text.split('.').length === 3;
 
-        localStorage.setItem('token', text);
+          if (!looksLikeJwt) {
+            this.errorMessage =
+              text || 'Hibás email-cím vagy jelszó. Vagy még nem regisztráltál.';
+            this.cdr.detectChanges();
+            return;
+          }
 
-        this.auth.loadMe(true).subscribe((me) => {
-          if (me?.roles?.includes('ADMIN')) this.router.navigate(['/admin']);
-          else this.router.navigate(['/classes']);
+          localStorage.setItem('token', text);
+
+          this.auth.loadMe(true).subscribe({
+            next: (me) => {
+              this.zone.run(() => {
+                if (me?.roles?.includes('ADMIN')) this.router.navigate(['/admin']);
+                else this.router.navigate(['/classes']);
+                this.cdr.detectChanges();
+              });
+            },
+            error: () => {
+              this.zone.run(() => {
+                this.errorMessage = 'Nem sikerült lekérni a felhasználói adatokat.';
+                this.cdr.detectChanges();
+              });
+            }
+          });
+
+          this.cdr.detectChanges();
         });
       },
 
       error: (err) => {
-        console.log('LOGIN ERROR:', err); // nézd a Console-ban is
-
-        this.errorMessage = this.getLoginErrorMessage(err);
+        this.zone.run(() => {
+          console.log('LOGIN ERROR:', err);
+          this.isLoading = false;
+          this.errorMessage = this.getLoginErrorMessage(err);
+          this.cdr.detectChanges();
+        });
       }
     });
   }
 
   private getLoginErrorMessage(err: any): string {
-    // 1) ha van szöveges body
     if (typeof err?.error === 'string' && err.error.trim()) {
       return err.error.trim();
     }
 
-    // 2) ha JSON (pl {message: "..."} )
     if (err?.error?.message) {
       return String(err.error.message);
     }
 
-    // 3) tipikus esetek
     if (err?.status === 401 || err?.status === 403) {
       return 'Hibás email-cím vagy jelszó. Vagy még nem regisztráltál.';
     }

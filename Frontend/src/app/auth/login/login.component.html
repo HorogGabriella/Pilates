@@ -34,9 +34,9 @@
     <button
       type="button"
       (click)="onLogin()"
-      [disabled]="!email || !password"
+      [disabled]="isLoading"
     >
-      Bejelentkezés
+    Bejelentkezés
     </button>
 
     <p class="register-link">

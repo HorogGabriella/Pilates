@@ -33,18 +33,17 @@
       (keyup.enter)="onRegister()"
     />
 
-    <p class="error" *ngIf="errorMessage">
+    <p class="error" *ngIf="submitted && errorMessage">
       {{ errorMessage }}
     </p>
 
     <p class="success" *ngIf="successMessage">
       {{ successMessage }}
     </p>
-
     <button
       type="button"
       (click)="onRegister()"
-      [disabled]="!name || !email || !password"
+      [disabled]="isLoading"
     >
       Regisztráció
     </button>
